@@ -443,13 +443,13 @@ Embedding =
       el: (a) ->
         el = $.el 'iframe'
         $.on el, 'load', ->
-          @contentWindow.postMessage {element: 't', query: 'height'}, 'https://twitframe.com'
+          @contentWindow.postMessage {element: 't', query: 'height'}, 'https://tf.rita.moe'
         onMessage = (e) ->
-          if e.source is el.contentWindow and e.origin is 'https://twitframe.com'
+          if e.source is el.contentWindow and e.origin is 'https://tf.rita.moe'
             $.off window, 'message', onMessage
             (cont or el).style.height = "#{+$.minmax(e.data.height, 250, 0.8 * doc.clientHeight)}px"
         $.on window, 'message', onMessage
-        el.src = "https://twitframe.com/show?url=https://twitter.com/#{a.dataset.uid}"
+        el.src = "https://tf.rita.moe/show?url=https://twitter.com/#{a.dataset.uid}"
         if $.engine is 'gecko'
           # XXX https://bugzilla.mozilla.org/show_bug.cgi?id=680823
           el.style.cssText = 'border: none; width: 100%; height: 100%;'
