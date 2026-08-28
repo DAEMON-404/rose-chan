@@ -1,0 +1,100 @@
+<fieldset>
+  <legend>Theme</legend>
+  <div>
+    <label>
+      Theme:
+      <select name="Theme">
+        <option value="none">None (use the site&#039;s own theme)</option>
+        <option value="rose-pine-dawn">Ros&eacute; Pine Dawn (light)</option>
+        <option value="rose-pine">Ros&eacute; Pine (dark)</option>
+      </select>
+    </label>
+    <span class="description">: Replaces the board&#039;s styling as well as <%= meta.name %>&#039;s own interface.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Auto Theme"> Follow system light/dark setting</label>
+    <span class="description">: Picks Dawn or Dark automatically from your OS preference, overriding the choice above.</span>
+  </div>
+  <div>
+    <label>
+      Accent:
+      <select name="Theme Accent">
+        <option value="iris">Iris (default)</option>
+        <option value="foam">Foam</option>
+        <option value="rose">Rose</option>
+        <option value="pine">Pine</option>
+        <option value="gold">Gold</option>
+        <option value="love">Love</option>
+      </select>
+    </label>
+    <span class="description">: Colour used for links, focus rings and highlights.</span>
+  </div>
+  <div>
+    <label>
+      Density:
+      <select name="Theme Density">
+        <option value="compact">Compact</option>
+        <option value="normal">Normal</option>
+        <option value="roomy">Roomy</option>
+      </select>
+    </label>
+    <span class="description">: Spacing and padding around posts.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Modern Font"> Modern font stack</label>
+    <span class="description">: Use the system UI font instead of the board default.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Card OP"> Cards for OPs</label>
+    <span class="description">: Give opening posts the same panel treatment as replies.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Square Corners"> Square corners</label>
+    <span class="description">: Turn off rounded corners.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Blur Effects"> Background blur</label>
+    <span class="description">: Frost the header bar and the settings backdrop. Costs a little performance.</span>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>Animations</legend>
+  <div>
+    <label><input type="checkbox" name="Animations"> Enable animations</label>
+    <span class="description">: Fade new posts in, and ease menus, dialogs and hovers.</span>
+  </div>
+  <div>
+    <label>
+      Speed:
+      <select name="Animation Speed">
+        <option value="fast">Fast</option>
+        <option value="normal">Normal</option>
+        <option value="slow">Slow</option>
+      </select>
+    </label>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Hover Effects"> Hover effects</label>
+    <span class="description">: Lift posts, thumbnails and catalog cards slightly under the cursor.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Smooth Scrolling"> Smooth scrolling</label>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Force Motion"> Animate even with &quot;reduce motion&quot; set</label>
+    <span class="description">: By default animations are shortened when your system asks for reduced motion.</span>
+  </div>
+</fieldset>
+
+<fieldset>
+  <legend>Navigation</legend>
+  <div>
+    <label><input type="checkbox" name="Scroll to Top"> Back-to-top button</label>
+    <span class="description">: Show a button in the corner once you have scrolled down.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Reading Progress"> Reading progress bar</label>
+    <span class="description">: Thin bar along the edge of the page showing how far you have scrolled.</span>
+  </div>
+</fieldset>

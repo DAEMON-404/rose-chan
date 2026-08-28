@@ -1,0 +1,846 @@
+/*
+ * Rosé Pine for 4chan X
+ * Two variants: `rose-pine-dawn` (light) and `rose-pine` (dark).
+ * Both share the `rp-theme` class, which carries every structural rule;
+ * the variant classes only redefine the palette below.
+ * Palette values are the upstream Rosé Pine specification.
+ */
+
+/* ============================ Palette ============================ */
+
+:root.rose-pine {
+  --rp-base:            #191724;
+  --rp-surface:         #1f1d2e;
+  --rp-overlay:         #26233a;
+  --rp-muted:           #6e6a86;
+  --rp-subtle:          #908caa;
+  --rp-text:            #e0def4;
+  --rp-love:            #eb6f92;
+  --rp-gold:            #f6c177;
+  --rp-rose:            #ebbcba;
+  --rp-pine:            #31748f;
+  --rp-foam:            #9ccfd8;
+  --rp-iris:            #c4a7e7;
+  --rp-hl-low:          #21202e;
+  --rp-hl-med:          #403d52;
+  --rp-hl-high:         #524f67;
+  --rp-shadow:          rgba(0, 0, 0, .45);
+  --rp-shadow-strong:   rgba(0, 0, 0, .65);
+  --rp-scrim:           rgba(9, 8, 15, .72);
+  --rp-glass:           rgba(31, 29, 46, .82);
+  --rp-quote:           #a2c08a;
+  --rp-heading:         #f6c177;
+  color-scheme: dark;
+}
+
+:root.rose-pine-dawn {
+  --rp-base:            #faf4ed;
+  --rp-surface:         #fffaf3;
+  --rp-overlay:         #f2e9e1;
+  --rp-muted:           #9893a5;
+  --rp-subtle:          #797593;
+  --rp-text:            #575279;
+  --rp-love:            #b4637a;
+  --rp-gold:            #ea9d34;
+  --rp-rose:            #d7827e;
+  --rp-pine:            #286983;
+  --rp-foam:            #56949f;
+  --rp-iris:            #907aa9;
+  --rp-hl-low:          #f4ede8;
+  --rp-hl-med:          #dfdad9;
+  --rp-hl-high:         #cecacd;
+  --rp-shadow:          rgba(87, 82, 121, .16);
+  --rp-shadow-strong:   rgba(87, 82, 121, .28);
+  --rp-scrim:           rgba(87, 82, 121, .38);
+  --rp-glass:           rgba(255, 250, 243, .84);
+  --rp-quote:           #5c8a55;
+  /* Dawn's gold is 2.2:1 on the cream background, too low to read as text, so
+     headings use a deepened gold (4.5:1) while --rp-gold keeps the spec value
+     for borders and fills. */
+  --rp-heading:         #9a6a16;
+  color-scheme: light;
+}
+
+/* Accent is user-selectable; iris is the default. */
+:root.rp-theme                { --rp-accent: var(--rp-iris); }
+:root.rp-theme.rp-accent-foam { --rp-accent: var(--rp-foam); }
+:root.rp-theme.rp-accent-rose { --rp-accent: var(--rp-rose); }
+:root.rp-theme.rp-accent-pine { --rp-accent: var(--rp-pine); }
+:root.rp-theme.rp-accent-gold { --rp-accent: var(--rp-gold); }
+:root.rp-theme.rp-accent-love { --rp-accent: var(--rp-love); }
+
+/* Geometry and density, both user-selectable. */
+:root.rp-theme {
+  --rp-radius:      10px;
+  --rp-radius-sm:   6px;
+  --rp-gap:         12px;
+  --rp-pad:         12px 14px;
+  --rp-post-gap:    8px;
+  --rp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --rp-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+:root.rp-theme.rp-square {
+  --rp-radius:      0px;
+  --rp-radius-sm:   0px;
+}
+:root.rp-theme.rp-compact {
+  --rp-gap:         6px;
+  --rp-pad:         6px 9px;
+  --rp-post-gap:    4px;
+}
+:root.rp-theme.rp-roomy {
+  --rp-gap:         18px;
+  --rp-pad:         16px 20px;
+  --rp-post-gap:    14px;
+}
+
+/* ============================ Page ============================ */
+
+:root.rp-theme,
+:root.rp-theme body {
+  background: var(--rp-base);
+  color: var(--rp-text);
+}
+:root.rp-theme body {
+  background-image: none;
+}
+:root.rp-theme.rp-modern-font body,
+:root.rp-theme.rp-modern-font .postMessage,
+:root.rp-theme.rp-modern-font .post,
+:root.rp-theme.rp-modern-font input,
+:root.rp-theme.rp-modern-font textarea,
+:root.rp-theme.rp-modern-font select,
+:root.rp-theme.rp-modern-font button {
+  font-family: var(--rp-font);
+}
+:root.rp-theme.rp-modern-font body {
+  font-size: 13.5px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+:root.rp-theme pre,
+:root.rp-theme code,
+:root.rp-theme .prettyprint {
+  font-family: var(--rp-mono);
+}
+
+:root.rp-theme a,
+:root.rp-theme a:visited {
+  color: var(--rp-accent);
+  text-decoration: none;
+}
+:root.rp-theme a:hover {
+  color: var(--rp-love);
+}
+:root.rp-theme hr {
+  border: none;
+  border-top: 1px solid var(--rp-hl-med);
+  opacity: .6;
+}
+:root.rp-theme .board > hr {
+  margin: var(--rp-gap) 0;
+}
+
+::selection {
+  background: var(--rp-hl-med);
+}
+:root.rp-theme ::selection {
+  background: var(--rp-hl-med);
+  color: var(--rp-text);
+}
+
+/* Scrollbars */
+:root.rp-theme * {
+  scrollbar-color: var(--rp-hl-high) transparent;
+  scrollbar-width: thin;
+}
+:root.rp-theme ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+:root.rp-theme ::-webkit-scrollbar-track {
+  background: transparent;
+}
+:root.rp-theme ::-webkit-scrollbar-thumb {
+  background: var(--rp-hl-med);
+  border: 2px solid var(--rp-base);
+  border-radius: 8px;
+}
+:root.rp-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--rp-hl-high);
+}
+
+/* ============================ Board header ============================ */
+
+:root.rp-theme .boardBanner {
+  margin: 18px auto 10px;
+}
+:root.rp-theme .boardBanner .boardTitle {
+  color: var(--rp-text);
+  font-family: var(--rp-font);
+  font-weight: 700;
+  letter-spacing: -.02em;
+}
+:root.rp-theme .boardBanner .boardSubtitle {
+  color: var(--rp-subtle);
+}
+:root.rp-theme #bannerCnt {
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  overflow: hidden;
+  box-shadow: 0 2px 10px var(--rp-shadow);
+}
+
+:root.rp-theme #boardNavDesktop,
+:root.rp-theme #boardNavDesktopFoot,
+:root.rp-theme .boardList {
+  color: var(--rp-muted);
+}
+:root.rp-theme #boardNavDesktop a,
+:root.rp-theme #boardNavDesktopFoot a,
+:root.rp-theme .boardList a {
+  color: var(--rp-subtle);
+}
+:root.rp-theme #boardNavDesktop a:hover,
+:root.rp-theme #boardNavDesktopFoot a:hover,
+:root.rp-theme .boardList a:hover {
+  color: var(--rp-accent);
+}
+
+:root.rp-theme #globalMessage,
+:root.rp-theme .globalMessage {
+  display: block;
+  background: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-left: 3px solid var(--rp-gold);
+  border-radius: var(--rp-radius);
+  padding: var(--rp-pad);
+  color: var(--rp-text);
+  margin: var(--rp-gap) auto;
+  max-width: 68ch;
+}
+
+/* ============================ Posts ============================ */
+
+:root.rp-theme .board {
+  margin-top: var(--rp-gap);
+}
+:root.rp-theme .thread {
+  margin-bottom: var(--rp-gap);
+}
+:root.rp-theme .postContainer {
+  margin-bottom: var(--rp-post-gap);
+}
+
+:root.rp-theme .post {
+  background: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  padding: var(--rp-pad);
+  color: var(--rp-text);
+  box-shadow: 0 1px 2px var(--rp-shadow);
+  overflow: hidden;
+}
+:root.rp-theme .post.op {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  padding-left: 0;
+  padding-right: 0;
+}
+:root.rp-theme.rp-card-op .post.op {
+  background: var(--rp-surface);
+  border-color: var(--rp-hl-med);
+  box-shadow: 0 1px 2px var(--rp-shadow);
+  padding: var(--rp-pad);
+}
+:root.rp-theme .post.reply:target,
+:root.rp-theme .post.reply.highlight {
+  background: var(--rp-overlay);
+  border-color: var(--rp-accent);
+  box-shadow: 0 0 0 1px var(--rp-accent);
+}
+
+/* Post metadata */
+:root.rp-theme .postInfo {
+  color: var(--rp-muted);
+}
+:root.rp-theme .postInfo .name {
+  color: var(--rp-foam);
+  font-weight: 600;
+}
+:root.rp-theme .postInfo .subject {
+  color: var(--rp-heading);
+  font-weight: 700;
+}
+:root.rp-theme .postInfo .postertrip {
+  color: var(--rp-iris);
+}
+:root.rp-theme .postInfo .posteruid,
+:root.rp-theme .postInfo .dateTime,
+:root.rp-theme .postInfo .postNum a {
+  color: var(--rp-muted);
+}
+:root.rp-theme .postInfo .postNum a:hover {
+  color: var(--rp-accent);
+}
+:root.rp-theme .postInfo .capcode,
+:root.rp-theme .capcodeAdmin .name,
+:root.rp-theme .capcodeMod .name,
+:root.rp-theme .capcodeDeveloper .name,
+:root.rp-theme .capcodeManager .name,
+:root.rp-theme .capcodeFounder .name {
+  color: var(--rp-love);
+}
+:root.rp-theme .sideArrows {
+  color: var(--rp-muted);
+  opacity: .5;
+}
+
+/* Comment body */
+:root.rp-theme .postMessage {
+  color: var(--rp-text);
+}
+:root.rp-theme .postMessage .quote,
+:root.rp-theme blockquote .quote {
+  color: var(--rp-quote);
+}
+:root.rp-theme .quotelink,
+:root.rp-theme .backlink {
+  color: var(--rp-accent);
+  border-bottom: 1px solid transparent;
+}
+:root.rp-theme .quotelink:hover,
+:root.rp-theme .backlink:hover {
+  color: var(--rp-love);
+  border-bottom-color: currentColor;
+}
+:root.rp-theme .deadlink,
+:root.rp-theme .quotelink.deadlink {
+  color: var(--rp-muted) !important;
+  text-decoration: line-through;
+}
+:root.rp-theme .backlink.deadlink {
+  color: var(--rp-muted) !important;
+}
+:root.rp-theme s,
+:root.rp-theme .spoiler {
+  background: var(--rp-hl-high);
+  color: transparent;
+  border-radius: 3px;
+}
+:root.rp-theme s:hover,
+:root.rp-theme .spoiler:hover {
+  color: var(--rp-text);
+}
+:root.rp-theme .abbr,
+:root.rp-theme .summary {
+  color: var(--rp-muted);
+}
+:root.rp-theme .postMessage pre,
+:root.rp-theme .postMessage code,
+:root.rp-theme .prettyprint {
+  background: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+  padding: 8px 10px;
+  color: var(--rp-text);
+  display: block;
+  overflow-x: auto;
+}
+
+/* Files */
+:root.rp-theme .fileText,
+:root.rp-theme .fileInfo {
+  color: var(--rp-muted);
+}
+:root.rp-theme .fileText a {
+  color: var(--rp-subtle);
+}
+:root.rp-theme .fileText a:hover {
+  color: var(--rp-accent);
+}
+:root.rp-theme .fileThumb,
+:root.rp-theme .fileThumb img {
+  border-radius: var(--rp-radius-sm);
+}
+
+/* Pagination and footer */
+:root.rp-theme .pagelist {
+  background: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  color: var(--rp-subtle);
+  padding: 6px 10px;
+}
+/* .pages nests inside .pagelist; only the outer element carries the frame. */
+:root.rp-theme .pagelist .pages {
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+:root.rp-theme .pages strong {
+  color: var(--rp-accent);
+}
+:root.rp-theme #absbot,
+:root.rp-theme .absBotText {
+  color: var(--rp-muted);
+}
+
+/* ============================ 4chan X interface ============================ */
+
+/* Generic dialogs */
+:root.rp-theme .dialog {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  color: var(--rp-text);
+  box-shadow: 0 8px 24px var(--rp-shadow);
+}
+:root.rp-theme .dialog:not(#qr):not(#thread-watcher):not(#header-bar) {
+  box-shadow: 0 8px 24px var(--rp-shadow);
+}
+:root.rp-theme .move,
+:root.rp-theme .drag {
+  color: var(--rp-subtle);
+}
+
+/* Header bar */
+:root.rp-theme #header-bar.dialog {
+  background-color: var(--rp-glass);
+  border-width: 0 0 1px;
+  border-color: var(--rp-hl-med);
+  border-radius: 0;
+  box-shadow: 0 1px 12px var(--rp-shadow);
+}
+:root.rp-theme.rp-blur #header-bar.dialog {
+  -webkit-backdrop-filter: saturate(1.4) blur(12px);
+  backdrop-filter: saturate(1.4) blur(12px);
+}
+:root.rp-theme #header-bar,
+:root.rp-theme #notifications {
+  color: var(--rp-subtle);
+}
+:root.rp-theme #header-bar a,
+:root.rp-theme #notifications a {
+  color: var(--rp-accent);
+}
+:root.rp-theme #header-bar a:hover {
+  color: var(--rp-love);
+}
+:root.rp-theme #shortcuts .shortcut {
+  color: var(--rp-subtle);
+}
+:root.rp-theme #shortcuts .shortcut:hover {
+  color: var(--rp-accent);
+}
+:root.rp-theme #board-list .current {
+  color: var(--rp-heading);
+  font-weight: 700;
+}
+
+/* Notifications */
+:root.rp-theme .notification {
+  border-radius: var(--rp-radius);
+  border: 1px solid var(--rp-hl-med);
+  box-shadow: 0 6px 18px var(--rp-shadow);
+  color: var(--rp-base);
+  /* The stock white-on-saturated look needs a shadow to stay legible; these
+     tints are picked for contrast, so the shadow only muddies them. */
+  text-shadow: none;
+}
+:root.rp-theme .notification.error   { background-color: var(--rp-love); }
+:root.rp-theme .notification.warning { background-color: var(--rp-gold); }
+:root.rp-theme .notification.info    { background-color: var(--rp-foam); }
+:root.rp-theme .notification.success { background-color: var(--rp-pine); color: var(--rp-text); }
+:root.rp-theme .notification a { color: inherit; text-decoration: underline; }
+
+/* Settings */
+:root.rp-theme #overlay {
+  background-color: var(--rp-scrim);
+}
+:root.rp-theme.rp-blur #overlay {
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+:root.rp-theme #fourchanx-settings {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  box-shadow: 0 20px 60px var(--rp-shadow-strong);
+  color: var(--rp-text);
+}
+:root.rp-theme #fourchanx-settings fieldset,
+:root.rp-theme .section-main div::before {
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+}
+:root.rp-theme #fourchanx-settings legend {
+  color: var(--rp-heading);
+  font-weight: 600;
+}
+:root.rp-theme .sections-list {
+  border-bottom: 1px solid var(--rp-hl-med);
+}
+:root.rp-theme .tab-selected {
+  color: var(--rp-heading) !important;
+  font-weight: 700;
+}
+:root.rp-theme .suboption-list > div:last-of-type {
+  background-color: var(--rp-overlay);
+}
+:root.rp-theme .description,
+:root.rp-theme .note {
+  color: var(--rp-muted);
+}
+:root.rp-theme .warning {
+  color: var(--rp-love);
+}
+
+/* Form controls */
+:root.rp-theme .field,
+:root.rp-theme #fourchanx-settings input[type="text"],
+:root.rp-theme #fourchanx-settings input[type="number"],
+:root.rp-theme #fourchanx-settings textarea,
+:root.rp-theme #fourchanx-settings select,
+:root.rp-theme #qr .field,
+:root.rp-theme #qr select,
+:root.rp-theme #qr textarea {
+  background-color: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+  color: var(--rp-text);
+}
+:root.rp-theme .field:focus,
+:root.rp-theme .field.focus,
+:root.rp-theme #fourchanx-settings input:focus,
+:root.rp-theme #fourchanx-settings textarea:focus,
+:root.rp-theme #fourchanx-settings select:focus,
+:root.rp-theme #qr .field:focus,
+:root.rp-theme #qr .field.focus {
+  border-color: var(--rp-accent) !important;
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--rp-accent) 30%, transparent);
+}
+:root.rp-theme input::placeholder,
+:root.rp-theme textarea::placeholder {
+  color: var(--rp-muted);
+}
+:root.rp-theme button,
+:root.rp-theme .persona button,
+:root.rp-theme #fourchanx-settings button {
+  background: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+  color: var(--rp-text);
+  padding: 3px 10px;
+  outline: none;
+}
+:root.rp-theme button:hover,
+:root.rp-theme .persona button:hover {
+  background: var(--rp-hl-med);
+  border-color: var(--rp-hl-high);
+}
+:root.rp-theme button:disabled {
+  opacity: .5;
+}
+:root.rp-theme .persona button::-moz-focus-inner {
+  border: none;
+}
+:root.rp-theme .persona button:focus {
+  border-color: var(--rp-accent);
+}
+:root.rp-theme input[type="checkbox"],
+:root.rp-theme input[type="radio"] {
+  accent-color: var(--rp-accent);
+}
+
+/* Native post form */
+:root.rp-theme #postForm,
+:root.rp-theme .postblock {
+  color: var(--rp-text);
+}
+:root.rp-theme .postblock {
+  background: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+}
+:root.rp-theme .postarea input,
+:root.rp-theme .postarea textarea,
+:root.rp-theme .postarea select,
+:root.rp-theme #postForm input,
+:root.rp-theme #postForm textarea,
+:root.rp-theme #postForm select {
+  background: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+  color: var(--rp-text);
+}
+:root.rp-theme .rules {
+  color: var(--rp-muted);
+}
+
+/* Quick reply */
+:root.rp-theme #qr {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  box-shadow: 0 12px 32px var(--rp-shadow-strong);
+}
+:root.rp-theme #qr .move {
+  color: var(--rp-subtle);
+}
+:root.rp-theme .qr-preview {
+  background-color: var(--rp-overlay);
+  color: var(--rp-text);
+}
+:root.rp-theme #qr-filename,
+:root.rp-theme #char-count {
+  color: var(--rp-muted);
+}
+:root.rp-theme #char-count.warning {
+  color: var(--rp-love);
+}
+:root.rp-theme .qr-link {
+  background: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+  color: var(--rp-text);
+}
+:root.rp-theme .qr-link:hover {
+  background: var(--rp-hl-med);
+}
+:root.rp-theme #dump-list::-webkit-scrollbar-thumb {
+  background-color: var(--rp-hl-med);
+  border-color: var(--rp-surface);
+}
+:root.rp-theme #qr.sjis-preview #sjis-toggle,
+:root.rp-theme #qr.tex-preview #tex-preview-button {
+  background: var(--rp-hl-med);
+}
+:root.rp-theme #file-n-submit > input,
+:root.rp-theme #qr-draw-button {
+  border-color: var(--rp-hl-med);
+}
+
+/* Menu */
+:root.rp-theme #menu {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  box-shadow: 0 10px 28px var(--rp-shadow-strong);
+  color: var(--rp-text);
+  overflow: hidden;
+  padding: 4px;
+}
+:root.rp-theme .entry {
+  border-radius: var(--rp-radius-sm);
+  padding: 4px 8px;
+}
+:root.rp-theme .focused.entry {
+  background: var(--rp-overlay);
+  color: var(--rp-text);
+}
+:root.rp-theme .menu-button {
+  color: var(--rp-muted);
+}
+:root.rp-theme .menu-button:hover {
+  color: var(--rp-accent);
+}
+
+/* Quote preview and image hover */
+:root.rp-theme #qp,
+:root.rp-theme #ihover {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  box-shadow: 0 12px 32px var(--rp-shadow-strong);
+}
+:root.rp-theme #qp .post {
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+:root.rp-theme .inline {
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+  background-color: var(--rp-overlay);
+}
+:root.rp-theme .qphl {
+  outline: 2px solid var(--rp-accent);
+  outline-offset: 1px;
+}
+
+/* Thread updater, stats, watcher */
+:root.rp-theme #updater,
+:root.rp-theme #thread-stats,
+:root.rp-theme #thread-watcher {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  color: var(--rp-text);
+  box-shadow: 0 6px 20px var(--rp-shadow);
+}
+:root.rp-theme #update-status.new  { color: var(--rp-foam); }
+:root.rp-theme #update-status.warning { color: var(--rp-heading); }
+:root.rp-theme #update-status.error   { color: var(--rp-love); }
+:root.rp-theme #thread-stats .warning { color: var(--rp-love); }
+:root.rp-theme .watcher-item > a,
+:root.rp-theme #watcher-link {
+  color: var(--rp-subtle);
+}
+:root.rp-theme .watcher-item:hover {
+  background: var(--rp-overlay);
+}
+:root.rp-theme .replies-quoting-you > a,
+:root.rp-theme #watcher-link.replies-quoting-you,
+:root.rp-theme .last-page > a > .watcher-page {
+  color: var(--rp-love) !important;
+}
+:root.rp-theme .unread-line {
+  border-color: var(--rp-love);
+}
+:root.rp-theme .unread-mark-read {
+  background-color: color-mix(in srgb, var(--rp-surface) 60%, transparent);
+}
+
+/* Index and catalog */
+:root.rp-theme #index-options,
+:root.rp-theme #index-search {
+  background-color: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius-sm);
+  color: var(--rp-text);
+}
+:root.rp-theme .catalog-thread {
+  border-radius: var(--rp-radius);
+}
+:root.rp-theme .catalog-post,
+:root.rp-theme.catalog-hover-expand .catalog-container:hover > .post {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  color: var(--rp-text);
+}
+:root.rp-theme .catalog-thumb {
+  border-radius: var(--rp-radius-sm);
+}
+:root.rp-theme .catalog-stats {
+  color: var(--rp-muted);
+}
+:root.rp-theme.werkTyme .catalog-thread:not(:hover),
+:root.rp-theme.werkTyme:not(.catalog-hover-expand) .catalog-thread,
+:root.rp-theme.catalog-hover-expand .catalog-container:hover > .post,
+:root.rp-theme.catalog-hover-expand .catalog-container:hover .catalog-reply {
+  border-color: var(--rp-hl-med);
+}
+:root.rp-theme .indicator {
+  color: var(--rp-surface);
+}
+:root.rp-theme #arc-list span.quote {
+  color: var(--rp-quote);
+}
+
+/* Gallery */
+:root.rp-theme #a-gallery {
+  background-color: var(--rp-scrim);
+}
+:root.rp-theme .gal-buttons a,
+:root.rp-theme #gal-buttons a {
+  color: var(--rp-text);
+}
+:root.rp-theme .gal-thumbnails {
+  background-color: var(--rp-surface);
+  border-top: 1px solid var(--rp-hl-med);
+}
+
+/* ============================ Highlighting ============================ */
+
+:root.rp-theme.highlight-you .quotesYou$site$highlightable$op,
+:root.rp-theme.highlight-you .quotesYou$site$highlightable$reply {
+  border-left: 3px solid var(--rp-love) !important;
+}
+:root.rp-theme.highlight-own .yourPost$site$highlightable$op,
+:root.rp-theme.highlight-own .yourPost$site$highlightable$reply {
+  border-left: 3px dashed var(--rp-gold) !important;
+}
+:root.rp-theme .filter-highlight$site$highlightable$op,
+:root.rp-theme .filter-highlight$site$highlightable$reply {
+  box-shadow: inset 4px 0 var(--rp-iris);
+}
+:root.rp-theme.highlight-own .yourPost > $site$sideArrows,
+:root.rp-theme.highlight-you .quotesYou > $site$sideArrows,
+:root.rp-theme .filter-highlight > $site$sideArrows {
+  color: var(--rp-accent);
+  opacity: 1;
+}
+:root.rp-theme .catalog-thread.filter-highlight .catalog-thumb,
+:root.rp-theme.werkTyme .catalog-thread.filter-highlight:not(:hover),
+:root.rp-theme.werkTyme:not(.catalog-hover-expand) .catalog-thread.filter-highlight,
+:root.rp-theme.werkTyme.catalog-hover-expand .catalog-thread.filter-highlight > .catalog-container:hover > .catalog-post {
+  box-shadow: 0 0 0 2px var(--rp-iris);
+}
+:root.rp-theme .catalog-thread.watched .catalog-thumb,
+:root.rp-theme.werkTyme .catalog-thread.watched:not(:hover),
+:root.rp-theme.werkTyme:not(.catalog-hover-expand) .catalog-thread.watched,
+:root.rp-theme.werkTyme.catalog-hover-expand .catalog-thread.watched > .catalog-container:hover > .catalog-post {
+  border: 2px solid var(--rp-foam);
+}
+
+/* Watcher heart, tinted per variant. */
+:root.rose-pine .watch-thread-link {
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 26 26' preserveAspectRatio='true' xmlns='http://www.w3.org/2000/svg'><path fill='rgb(224,222,244)' d='M24.132,7.971c-2.203-2.205-5.916-2.098-8.25,0.235L15.5,8.588l-0.382-0.382c-2.334-2.333-6.047-2.44-8.25-0.235c-2.204,2.203-2.098,5.916,0.235,8.249l8.396,8.396l8.396-8.396C26.229,13.887,26.336,10.174,24.132,7.971z'/></svg>");
+}
+:root.rose-pine-dawn .watch-thread-link {
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 26 26' preserveAspectRatio='true' xmlns='http://www.w3.org/2000/svg'><path fill='rgb(87,82,121)' d='M24.132,7.971c-2.203-2.205-5.916-2.098-8.25,0.235L15.5,8.588l-0.382-0.382c-2.334-2.333-6.047-2.44-8.25-0.235c-2.204,2.203-2.098,5.916,0.235,8.249l8.396,8.396l8.396-8.396C26.229,13.887,26.336,10.174,24.132,7.971z'/></svg>");
+}
+:root.rp-theme .watch-thread-link.watched {
+  background-image: url("data:image/svg+xml,<svg viewBox='0 0 26 26' preserveAspectRatio='true' xmlns='http://www.w3.org/2000/svg'><path fill='rgb(235,111,146)' d='M24.132,7.971c-2.203-2.205-5.916-2.098-8.25,0.235L15.5,8.588l-0.382-0.382c-2.334-2.333-6.047-2.44-8.25-0.235c-2.204,2.203-2.098,5.916,0.235,8.249l8.396,8.396l8.396-8.396C26.229,13.887,26.336,10.174,24.132,7.971z'/></svg>");
+}
+
+/* Shortcut icon for the native settings link, matched to the variant. */
+:root.rp-theme.shortcut-icons .native-settings {
+  background-image: url('//s.4cdn.org/image/favicon-ws.ico');
+}
+:root.rose-pine-dawn.shortcut-icons .native-settings {
+  background-image: url('//s.4cdn.org/image/favicon.ico');
+}
+
+/* ============================ Miscellaneous ============================ */
+
+:root.rp-theme .hide-thread-button,
+:root.rp-theme .hide-reply-button,
+:root.rp-theme .stub {
+  color: var(--rp-muted);
+}
+:root.rp-theme .stub:hover {
+  color: var(--rp-accent);
+}
+:root.rp-theme #embedding {
+  background-color: var(--rp-surface);
+  border: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+}
+:root.rp-theme .fa,
+:root.rp-theme .fourchanx-icon {
+  color: inherit;
+}
+:root.rp-theme table.flashListing,
+:root.rp-theme table.flashListing td {
+  border-color: var(--rp-hl-med);
+  color: var(--rp-text);
+}
+:root.rp-theme #arc-list td,
+:root.rp-theme #arc-list th {
+  border-color: var(--rp-hl-med);
+}
+:root.rp-theme #arc-list tr:nth-child(even) {
+  background-color: var(--rp-overlay);
+}
+
+/* Inlined quotes render inside a container that already draws the frame. */
+:root.rp-theme .inline .post {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 4px 6px;
+}

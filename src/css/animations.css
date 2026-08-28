@@ -1,0 +1,190 @@
+/*
+ * Motion layer for 4chan X.
+ * Everything is gated behind `fourchanx-animations` on <html>, so the layer is
+ * inert unless the user opts in, and independent of which theme is active.
+ * Durations come from custom properties so the speed setting is a class swap.
+ */
+
+:root.fourchanx-animations {
+  --fx-fast:  110ms;
+  --fx-dur:   190ms;
+  --fx-slow:  320ms;
+  --fx-ease:  cubic-bezier(.2, .7, .3, 1);
+  --fx-lift:  cubic-bezier(.34, 1.4, .5, 1);
+}
+:root.fourchanx-animations.fx-speed-fast {
+  --fx-fast:  60ms;
+  --fx-dur:   110ms;
+  --fx-slow:  180ms;
+}
+:root.fourchanx-animations.fx-speed-slow {
+  --fx-fast:  180ms;
+  --fx-dur:   320ms;
+  --fx-slow:  520ms;
+}
+
+/* ============================ Keyframes ============================ */
+
+@keyframes fx-post-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fx-pop-in {
+  from { opacity: 0; transform: scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fx-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fx-slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fx-highlight-pulse {
+  0%   { outline-color: transparent; }
+  35%  { outline-color: currentColor; }
+  100% { outline-color: transparent; }
+}
+@keyframes fx-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================ Arrival ============================ */
+
+/* Posts fetched by the thread updater; the class is removed once it plays. */
+:root.fourchanx-animations .fx-new-post {
+  animation: fx-post-in var(--fx-slow) var(--fx-ease) both;
+}
+
+/* Floating surfaces that get created on demand. */
+:root.fourchanx-animations #qp,
+:root.fourchanx-animations #ihover,
+:root.fourchanx-animations #menu,
+:root.fourchanx-animations .notification {
+  animation: fx-pop-in var(--fx-dur) var(--fx-lift) both;
+}
+:root.fourchanx-animations #overlay {
+  animation: fx-fade-in var(--fx-dur) var(--fx-ease) both;
+}
+:root.fourchanx-animations #fourchanx-settings {
+  animation: fx-pop-in var(--fx-slow) var(--fx-lift) both;
+}
+:root.fourchanx-animations #qr {
+  animation: fx-slide-down var(--fx-dur) var(--fx-lift) both;
+}
+:root.fourchanx-animations .inline {
+  animation: fx-fade-in var(--fx-dur) var(--fx-ease) both;
+}
+
+/* ============================ Interaction ============================ */
+
+:root.fourchanx-animations a,
+:root.fourchanx-animations .shortcut,
+:root.fourchanx-animations .menu-button,
+:root.fourchanx-animations .entry,
+:root.fourchanx-animations button,
+:root.fourchanx-animations .qr-link,
+:root.fourchanx-animations .watcher-item {
+  transition:
+    color var(--fx-fast) var(--fx-ease),
+    background-color var(--fx-fast) var(--fx-ease),
+    border-color var(--fx-fast) var(--fx-ease),
+    opacity var(--fx-fast) var(--fx-ease);
+}
+:root.fourchanx-animations .field,
+:root.fourchanx-animations input,
+:root.fourchanx-animations textarea,
+:root.fourchanx-animations select {
+  transition:
+    border-color var(--fx-fast) var(--fx-ease),
+    box-shadow var(--fx-fast) var(--fx-ease),
+    background-color var(--fx-fast) var(--fx-ease);
+}
+:root.fourchanx-animations button:active {
+  transform: translateY(1px);
+}
+
+/* Post cards lift very slightly on hover. */
+:root.fourchanx-animations.fx-hover-lift .post.reply {
+  transition:
+    box-shadow var(--fx-dur) var(--fx-ease),
+    border-color var(--fx-dur) var(--fx-ease),
+    transform var(--fx-dur) var(--fx-ease);
+}
+:root.fourchanx-animations.fx-hover-lift .postContainer:hover > .post.reply {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, .18);
+}
+
+/* Thumbnails. */
+:root.fourchanx-animations .fileThumb img,
+:root.fourchanx-animations .catalog-thumb {
+  transition: transform var(--fx-dur) var(--fx-ease), opacity var(--fx-dur) var(--fx-ease);
+}
+:root.fourchanx-animations.fx-hover-lift .fileThumb:hover img:not([data-expanded]),
+:root.fourchanx-animations.fx-hover-lift .catalog-thread:hover .catalog-thumb {
+  transform: scale(1.03);
+}
+
+/* Catalog cards. */
+:root.fourchanx-animations .catalog-thread {
+  transition: transform var(--fx-dur) var(--fx-ease), box-shadow var(--fx-dur) var(--fx-ease);
+}
+:root.fourchanx-animations.fx-hover-lift .catalog-thread:hover {
+  transform: translateY(-2px);
+}
+
+/* Expanded images ease open instead of snapping. */
+:root.fourchanx-animations .fileThumb > img[data-expanded] {
+  animation: fx-fade-in var(--fx-dur) var(--fx-ease) both;
+}
+
+/* Header auto-hide already transitions; keep it on the shared curve. */
+:root.fourchanx-animations #header-bar {
+  transition: transform var(--fx-dur) var(--fx-ease), opacity var(--fx-dur) var(--fx-ease), background-color var(--fx-dur) var(--fx-ease);
+}
+
+/* Quote-preview highlight gets a pulse rather than a hard outline. */
+:root.fourchanx-animations .qphl {
+  animation: fx-highlight-pulse calc(var(--fx-slow) * 3) var(--fx-ease) both;
+}
+
+/* Updater activity. */
+:root.fourchanx-animations #update-timer.loading::before,
+:root.fourchanx-animations .fa-spinner {
+  display: inline-block;
+  animation: fx-spin 900ms linear infinite;
+}
+
+/* Newly marked-unread line. */
+:root.fourchanx-animations .unread-line {
+  transition: border-color var(--fx-slow) var(--fx-ease);
+}
+
+/* Hidden-post stubs collapse smoothly. */
+:root.fourchanx-animations .stub {
+  transition: opacity var(--fx-fast) var(--fx-ease);
+}
+
+/* ============================ Accessibility ============================ */
+
+/*
+ * Honour the OS "reduce motion" setting unless the user has explicitly asked
+ * for motion anyway. Transitions are kept but shortened; keyframes are dropped.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root.fourchanx-animations:not(.fx-force-motion) {
+    --fx-fast: 1ms;
+    --fx-dur:  1ms;
+    --fx-slow: 1ms;
+  }
+  :root.fourchanx-animations:not(.fx-force-motion) *,
+  :root.fourchanx-animations:not(.fx-force-motion) *::before,
+  :root.fourchanx-animations:not(.fx-force-motion) *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
