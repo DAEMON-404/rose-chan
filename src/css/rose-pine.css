@@ -54,9 +54,9 @@
   --rp-scrim:           rgba(87, 82, 121, .38);
   --rp-glass:           rgba(255, 250, 243, .84);
   --rp-quote:           #5c8a55;
-  /* Dawn's gold is 2.2:1 on the cream background, too low to read as text, so
-     headings use a deepened gold (4.5:1) while --rp-gold keeps the spec value
-     for borders and fills. */
+  /* Dawn's gold measures 2.05:1 on the cream background, unreadable as text, so
+     headings use a deepened gold (4.32:1 — better, though still under the 4.5:1
+     AA threshold) while --rp-gold keeps the spec value for borders and fills. */
   --rp-heading:         #9a6a16;
   color-scheme: light;
 }

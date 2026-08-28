@@ -1,4 +1,28 @@
-**Note**: Installing the script from one of the links below will disable automatic updates. If you want automatic updates, install the script from the links on the [main page](https://www.4chan-x.net/).
+# Changelog
+
+## Rose-chan
+
+Rose-chan does not check for updates. To move to a new build, reinstall from
+[the site](https://daemon-404.github.io/rose-chan/) — see the
+[README](https://github.com/DAEMON-404/rose-chan#install).
+
+### 2026-08-28
+- Rose-chan becomes its own project: renamed repository, its own site published with GitHub Pages, and
+  in-script links (homepage, issues, changelog, licence) repointed away from upstream.
+- The in-script version string now reads `4chan X rose-chan`, so bug reports identify this build.
+- The in-app bug reporter now pre-fills the issue title and body, which upstream's URL silently discarded.
+
+### Earlier
+- Rosé Pine Dawn and Dark themes applied to the board itself, with a Theme tab in Settings, an animation
+  layer, appearance options, and navigation extras. See the
+  [README](https://github.com/DAEMON-404/rose-chan#what-it-adds).
+
+---
+
+## 4chan X (upstream)
+
+Everything below is [4chan X](https://github.com/ccd0/4chan-x)'s own history, written by ccd0 and
+carried over unchanged. Rose-chan inherits these changes whenever it is rebuilt.
 
 -Sometimes the changelog has notes (not comprehensive) acknowledging people's work. This does not mean the changes are their fault, only that their code was used. All changes to the script are chosen by and the fault of the maintainer (ccd0).
 

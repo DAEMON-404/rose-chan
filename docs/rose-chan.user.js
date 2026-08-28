@@ -4,8 +4,8 @@
 // @minGMVer     1.14
 // @minFFVer     26
 // @namespace    4chan-X
-// @description  4chan X is a script that adds various features to anonymous imageboards.
-// @license      MIT; https://github.com/ccd0/4chan-x/blob/master/LICENSE 
+// @description  Rose-chan is a Rosé Pine themed build of 4chan X, a script that adds various features to anonymous imageboards.
+// @license      MIT; https://github.com/DAEMON-404/rose-chan/blob/master/LICENSE 
 // @include      http://boards.4chan.org/*
 // @include      https://boards.4chan.org/*
 // @include      http://sys.4chan.org/*
@@ -113,10 +113,18 @@
 // ==/UserScript==
 
 /*
-* 4chan X
+* Rose-chan
 *
 * Licensed under the MIT license.
+* https://github.com/DAEMON-404/rose-chan/blob/master/LICENSE
+*
+* Rose-chan additions Copyright © 2026 DAEMON-404
+* https://github.com/DAEMON-404/rose-chan
+*
+* Built on 4chan X, maintained by ccd0 and licensed MIT.
 * https://github.com/ccd0/4chan-x/blob/master/LICENSE
+*
+* Upstream's copyright notices follow, unchanged:
 *
 * Appchan X Copyright © 2013-2016 Zixaphir <zixaphirmoxphar@gmail.com>
 * http://zixaphir.github.io/appchan-x/ 
@@ -4739,9 +4747,9 @@ a:only-of-type > .remove {\n\
   --rp-scrim:           rgba(87, 82, 121, .38);\n\
   --rp-glass:           rgba(255, 250, 243, .84);\n\
   --rp-quote:           #5c8a55;\n\
-  /* Dawn's gold is 2.2:1 on the cream background, too low to read as text, so\n\
-     headings use a deepened gold (4.5:1) while --rp-gold keeps the spec value\n\
-     for borders and fills. */\n\
+  /* Dawn's gold measures 2.05:1 on the cream background, unreadable as text, so\n\
+     headings use a deepened gold (4.32:1 — better, though still under the 4.5:1\n\
+     AA threshold) while --rp-gold keeps the spec value for borders and fills. */\n\
   --rp-heading:         #9a6a16;\n\
   color-scheme: light;\n\
 }\n\
@@ -13847,7 +13855,7 @@ Settings = (function() {
       $.event('CloseMenu');
       Settings.dialog = dialog = $.el('div', {
         id: 'overlay'
-      }, {innerHTML: "<div id=\"fourchanx-settings\" class=\"dialog\"><nav><div class=\"sections-list\"></div><p class=\"imp-exp-result warning\"></p><div class=\"credits\"><a class=\"export\">Export</a>&nbsp|&nbsp<a class=\"import\">Import</a>&nbsp|&nbsp<a class=\"reset\">Reset Settings</a>&nbsp|&nbsp<input type=\"file\" hidden><a href=\"https://www.4chan-x.net/\" target=\"_blank\">4chan X</a>&nbsp|&nbsp<a href=\"https://github.com/ccd0/4chan-x/blob/master/CHANGELOG.md\" target=\"_blank\">" + E(g.VERSION) + "</a>&nbsp|&nbsp<a href=\"https://github.com/ccd0/4chan-x/issues\" target=\"_blank\">Issues</a>&nbsp|&nbsp<a href=\"javascript:;\" class=\"close fa fa-times\" title=\"Close\"></a></div></nav><div class=\"section-container\"><section></section></div></div>"});
+      }, {innerHTML: "<div id=\"fourchanx-settings\" class=\"dialog\"><nav><div class=\"sections-list\"></div><p class=\"imp-exp-result warning\"></p><div class=\"credits\"><a class=\"export\">Export</a>&nbsp|&nbsp<a class=\"import\">Import</a>&nbsp|&nbsp<a class=\"reset\">Reset Settings</a>&nbsp|&nbsp<input type=\"file\" hidden><a href=\"https://daemon-404.github.io/rose-chan/\" target=\"_blank\">4chan X</a>&nbsp|&nbsp<a href=\"https://github.com/DAEMON-404/rose-chan/blob/master/CHANGELOG.md\" target=\"_blank\">" + E(g.VERSION) + "</a>&nbsp|&nbsp<a href=\"https://github.com/DAEMON-404/rose-chan/issues\" target=\"_blank\">Issues</a>&nbsp|&nbsp<a href=\"javascript:;\" class=\"close fa fa-times\" title=\"Close\"></a></div></nav><div class=\"section-container\"><section></section></div></div>"});
       $.on($('.export', dialog), 'click', Settings["export"]);
       $.on($('.import', dialog), 'click', Settings["import"]);
       $.on($('.reset', dialog), 'click', Settings.reset);
@@ -28853,7 +28861,7 @@ Main = (function() {
       return $.set(changes, function() {
         var el, ref;
         if ((ref = items['Show Updated Notifications']) != null ? ref : true) {
-          el = $.el('span', {innerHTML: "4chan X has been updated to <a href=\"https://github.com/ccd0/4chan-x/blob/master/CHANGELOG.md\" target=\"_blank\">version " + E(g.VERSION) + "</a>."});
+          el = $.el('span', {innerHTML: "4chan X has been updated to <a href=\"https://github.com/DAEMON-404/rose-chan/blob/master/CHANGELOG.md\" target=\"_blank\">version " + E(g.VERSION) + "</a>."});
           return new Notice('info', el, 15);
         }
       });
@@ -29436,7 +29444,7 @@ Main = (function() {
       });
       lines = ((ref = data.error.stack) != null ? (ref1 = ref.match(/\d+(?=:\d+\)?$)/mg)) != null ? ref1.join().replace(/^/, ' at ') : void 0 : void 0) || '';
       context = $.el('div', {
-        textContent: "(4chan X ccd0 v" + g.VERSION + " " + $.platform + " on " + $.engine + lines + ")"
+        textContent: "(4chan X rose-chan v" + g.VERSION + " " + $.platform + " on " + $.engine + lines + ")"
       });
       return [message, error, context];
     },
@@ -29449,11 +29457,11 @@ Main = (function() {
       }
       details = '';
       addDetails = function(text) {
-        if (!(encodeURIComponent(title + details + text + '\n').length > 8143)) {
+        if (!(encodeURIComponent(title + details + text + '\n').length > 8118)) {
           return details += text + '\n';
         }
       };
-      addDetails("[Please describe the steps needed to reproduce this error.]\n\nScript: 4chan X ccd0 v" + g.VERSION + " " + $.platform + "\nURL: " + location.href + "\nUser agent: " + navigator.userAgent);
+      addDetails("[Please describe the steps needed to reproduce this error.]\n\nScript: 4chan X rose-chan v" + g.VERSION + " " + $.platform + "\nURL: " + location.href + "\nUser agent: " + navigator.userAgent);
       if ($.platform === 'userscript' && (info = typeof GM !== "undefined" && GM !== null ? GM.info : (typeof GM_info !== "undefined" && GM_info !== null ? GM_info : void 0))) {
         addDetails("Userscript manager: " + info.scriptHandler + " " + info.version);
       }
@@ -29465,7 +29473,7 @@ Main = (function() {
         addDetails('\n`' + data.html + '`');
       }
       details = details.replace(/file:\/{3}.+\//g, '');
-      url = 'https://github.com/ccd0/4chan-x/issues'.replace('%title', encodeURIComponent(title)).replace('%details', encodeURIComponent(details));
+      url = 'https://github.com/DAEMON-404/rose-chan/issues/new?title=%title&body=%details'.replace('%title', encodeURIComponent(title)).replace('%details', encodeURIComponent(details));
       return {innerHTML: "<span class=\"report-error\"> [<a href=\"" + E(url) + "\" target=\"_blank\">report</a>]</span>"};
     },
     isThisPageLegit: function() {
