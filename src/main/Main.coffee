@@ -249,7 +249,7 @@ Main =
   setClass: ->
     knownStyles = ['yotsuba', 'yotsuba-b', 'futaba', 'burichan', 'photon', 'tomorrow', 'spooky']
 
-    if g.SITE.software is 'yotsuba' and g.VIEW is 'catalog'
+    if g.SITE.software is 'yotsuba' and g.VIEW is 'catalog' and not Theme.enabled()
       if (mainStyleSheet = $.id('base-css'))
         style = mainStyleSheet.href.match(/catalog_(\w+)/)?[1].replace('_new', '').replace(/_+/g, '-')
         if style in knownStyles
@@ -259,11 +259,19 @@ Main =
     style = mainStyleSheet = styleSheets = null
 
     setStyle = ->
+      # One of 4chan X's own themes replaces the site's styling entirely, so
+      # there is nothing to match our dialogs against.
+      if Theme.enabled()
+        $.rmClass doc, style if style
+        style = null
+        $.rm Main.bgColorStyle
+        return
+
       # Use preconfigured CSS for 4chan's default themes.
       if g.SITE.software is 'yotsuba'
         $.rmClass doc, style
         style = null
-        for styleSheet in styleSheets
+        for styleSheet in (styleSheets or [])
           if styleSheet.href is mainStyleSheet?.href
             style = styleSheet.title.toLowerCase().replace('new', '').trim().replace /\s+/g, '-'
             style = styleSheet.href.match(/[a-z]*(?=[^/]*$)/)[0] if style is '_special'
@@ -302,6 +310,8 @@ Main =
         """
       Main.bgColorStyle.textContent = css
       $.after $.id('fourchanx-css'), Main.bgColorStyle
+
+    Main.updateNativeStyle = setStyle
 
     $.onExists d.head, g.SITE.selectors.styleSheet, (el) ->
       mainStyleSheet = el
@@ -630,6 +640,9 @@ Main =
     ['Image Host Rewriting',      ImageHost]
     ['Redirect',                  Redirect]
     ['Header',                    Header]
+    ['Theme',                     Theme]
+    ['Scroll to Top',             Theme.scrollToTop]
+    ['Reading Progress',          Theme.progress]
     ['Catalog Links',             CatalogLinks]
     ['Settings',                  Settings]
     ['Index Generator',           Index]

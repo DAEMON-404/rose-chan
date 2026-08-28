@@ -2487,3 +2487,87 @@ a:only-of-type > .remove {
 .fcx-announcement a {
   text-decoration: underline;
 }
+
+/* Smooth scrolling */
+:root.fx-smooth-scroll {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root.fx-smooth-scroll:not(.fx-force-motion) {
+    scroll-behavior: auto;
+  }
+}
+
+/* Reading progress */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 100;
+  pointer-events: none;
+  background: transparent;
+}
+:root.bottom-header #reading-progress {
+  top: auto;
+  bottom: 0;
+}
+#reading-progress > .progress-fill {
+  height: 100%;
+  width: 0;
+  background: currentColor;
+  color: #3ba9d6;
+  transform-origin: left center;
+}
+:root.rp-theme #reading-progress > .progress-fill {
+  color: var(--rp-accent);
+}
+:root.fourchanx-animations #reading-progress > .progress-fill {
+  transition: width var(--fx-fast, 110ms) linear;
+}
+
+/* Scroll to top */
+#scroll-to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 15;
+  width: 38px;
+  height: 38px;
+  line-height: 38px;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  background-color: inherit;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .25);
+  padding: 0;
+  font-size: 15px;
+}
+#scroll-to-top.visible {
+  opacity: .85;
+  visibility: visible;
+  transform: none;
+}
+#scroll-to-top:hover {
+  opacity: 1;
+}
+:root.fourchanx-animations #scroll-to-top {
+  transition:
+    opacity var(--fx-dur, 190ms) var(--fx-ease, ease),
+    transform var(--fx-dur, 190ms) var(--fx-ease, ease),
+    visibility var(--fx-dur, 190ms) var(--fx-ease, ease);
+}
+:root.rp-theme #scroll-to-top {
+  background-color: var(--rp-surface);
+  border-color: var(--rp-hl-med);
+  color: var(--rp-accent);
+}
+:root.rp-theme #scroll-to-top:hover {
+  background-color: var(--rp-overlay);
+  border-color: var(--rp-accent);
+}

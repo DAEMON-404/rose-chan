@@ -15,6 +15,7 @@ Settings =
     add 'Main',     @main
     add 'Filter',   @filter
     add 'Sauce',    @sauce
+    add 'Theme',    @theme
     add 'Advanced', @advanced
     add 'Keybinds', @keybinds
 
@@ -605,6 +606,36 @@ Settings =
       ta.value = item['sauces']
       (ta.hidden = false) # XXX prevent Firefox from adding initialization to undo queue
     $.on ta, 'change', $.cb.value
+
+  theme: (section) ->
+    $.extend section, `<%= readHTML('Theme.html') %>`
+
+    inputs = $.dict()
+    for input in $$ '[name]', section
+      inputs[input.name] = input
+
+    # "Auto Theme" overrides the variant picker, and the motion options are
+    # meaningless with animations off; grey them out rather than lie about them.
+    updateDisabled = ->
+      inputs['Theme'].disabled = !!Conf['Auto Theme']
+      for name in ['Animation Speed', 'Hover Effects', 'Force Motion']
+        inputs[name].disabled = !Conf['Animations']
+      return
+
+    items = $.dict()
+    for name, input of inputs
+      items[name] = Conf[name]
+      $.on input, 'change', $.cb[if input.type is 'checkbox' then 'checked' else 'value']
+      $.on input, 'change', ->
+        updateDisabled()
+        Theme.apply()
+
+    $.get items, (items) ->
+      for key, val of items
+        input = inputs[key]
+        input[if input.type is 'checkbox' then 'checked' else 'value'] = val
+      updateDisabled()
+      return
 
   advanced: (section) ->
     $.extend section, `<%= readHTML('Advanced.html') %>`

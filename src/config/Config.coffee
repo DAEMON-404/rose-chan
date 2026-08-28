@@ -826,6 +826,25 @@ Config =
     'Shortcut Icons':             true
     'Custom Board Navigation':    true
 
+  themes:
+    # 'none' leaves the site's own styling alone; the other values are the two
+    # Rosé Pine variants shipped in src/css/rose-pine.css.
+    'Theme':               'none'
+    'Auto Theme':          false
+    'Theme Accent':        'iris'
+    'Theme Density':       'normal'
+    'Square Corners':      false
+    'Modern Font':         true
+    'Card OP':             true
+    'Blur Effects':        true
+    'Animations':          true
+    'Animation Speed':     'normal'
+    'Hover Effects':       true
+    'Force Motion':        false
+    'Smooth Scrolling':    true
+    'Scroll to Top':       true
+    'Reading Progress':    false
+
   archives:
     archiveLists:      'https://4chenz.github.io/archives.json/archives.json'
     lastarchivecheck:  0
