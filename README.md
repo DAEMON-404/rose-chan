@@ -7,6 +7,56 @@ It was previously developed by [aeosynth](https://github.com/aeosynth/4chan-x), 
 If you're looking for a maintained fork of OneeChan (a style script used in addition to 4chan X), try
 https://github.com/KevinParnell/OneeChan.
 
+## Rose-chan
+
+**Rose-chan** is this fork: a build of 4chan X themed with [Rosé Pine](https://rosepinetheme.com/), in both
+**Dawn** (light) and **Dark**, with an optional animation layer and a few navigation extras.
+
+Site and one-click install: **https://daemon-404.github.io/4chan-x/**
+
+![Rosé Pine Dark](docs/img/board-dark.jpg)
+
+### Installing Rose-chan
+
+1. Install [Violentmonkey](https://violentmonkey.github.io/) or [Tampermonkey](https://tampermonkey.net/).
+2. Install **[the userscript](https://daemon-404.github.io/4chan-x/rose-chan.user.js)** (or, if Pages isn't
+   enabled yet, [the raw file](https://github.com/DAEMON-404/4chan-x/raw/master/docs/rose-chan.user.js)).
+3. On any board, open `[Settings]` → the new **Theme** tab, and pick a theme.
+
+Two things worth knowing before you install:
+
+- **It replaces 4chan X rather than running beside it.** Rose-chan keeps the same script name, so your
+  manager installs it over any existing copy and your settings carry over. That is deliberate — two copies
+  of 4chan X conflict, and 4chan X itself warns when it detects them. To go back, reinstall from
+  [4chan-x.net](https://www.4chan-x.net/builds/4chan-X.user.js).
+- **It does not auto-update.** Update checks are switched off on purpose. The stock build points its
+  `@updateURL` at 4chan-x.net, so leaving updates on would let your manager quietly replace Rose-chan with
+  upstream 4chan X and take the themes with it.
+
+Everything Rose-chan adds is off by default, so a fresh install behaves exactly like stock 4chan X until you
+choose a theme.
+
+### What it adds
+
+- **Two Rosé Pine variants**, upstream palette, applied to the board itself — posts, greentext, quotes,
+  files, code blocks, catalog and pagination — not just 4chan X's own dialogs.
+- **Follow the system light/dark setting**, plus a header shortcut that flips between the variants.
+- **An animation layer**: new posts fade in, menus and dialogs ease open, thumbnails and catalog cards lift
+  on hover. Three speeds, and `prefers-reduced-motion` is honoured unless you override it.
+- **Appearance options**: six accent colours, three density levels, square or rounded corners, a modern font
+  stack, and optional background blur.
+- **Navigation extras**: a back-to-top button, a reading progress bar, and smooth scrolling.
+
+### Building it yourself
+
+```
+npm install
+make
+```
+
+The build writes to `testbuilds/`; `testbuilds/4chan-X-noupdate.user.js` is the file published as
+`docs/rose-chan.user.js`.
+
 ## Please note
 **Uninstalling**: 4chan X disables the native extension, so if you uninstall 4chan X, you'll need to re-enable it. To do this, click the `[Settings]` link in the top right corner, uncheck "`Disable the native extension`" in the panel that appears, and click the "`Save Settings`" button. If you don't see a "`Save Settings`" button, it may be being hidden by your ad blocker.
 
@@ -15,6 +65,8 @@ https://github.com/KevinParnell/OneeChan.
 Use of the "Link Title" feature to fetch titles of Youtube links is subject to Youtube's [Terms of Service](https://www.youtube.com/t/terms) and [Privacy Policy](http://www.google.com/policies/privacy). For more details on what information is sent to Youtube and other sites, and how to turn it off if you don't want the feature, see 4chan X's [privacy documentation](https://github.com/ccd0/4chan-x/wiki/Privacy).
 
 ## Install
+
+*The links in this section install upstream 4chan X. For Rose-chan, see [Installing Rose-chan](#installing-rose-chan) above.*
 
 ### Firefox
 Install [Violentmonkey](https://addons.mozilla.org/en-US/firefox/addon/violentmonkey/), [Tampermonkey](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/), or [Greasemonkey](https://addons.mozilla.org/en-US/firefox/addon/greasemonkey/) (issues since v4: [#2526](https://github.com/greasemonkey/greasemonkey/issues/2526), [#2576](https://github.com/greasemonkey/greasemonkey/issues/2574)), then **[click here to install 4chan X](https://www.4chan-x.net/builds/4chan-X.user.js)**.

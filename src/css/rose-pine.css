@@ -239,7 +239,6 @@
   padding: var(--rp-pad);
   color: var(--rp-text);
   box-shadow: 0 1px 2px var(--rp-shadow);
-  overflow: hidden;
 }
 :root.rp-theme .post.op {
   background: transparent;
@@ -623,13 +622,16 @@
 }
 
 /* Menu */
-:root.rp-theme #menu {
+/* No overflow clipping here: .submenu is a child of .entry and flies out at
+   left:100%, so hiding overflow would swallow every submenu. The 4px padding
+   keeps focused entries clear of the rounded corners instead. */
+:root.rp-theme #menu,
+:root.rp-theme .submenu {
   background-color: var(--rp-surface);
   border: 1px solid var(--rp-hl-med);
   border-radius: var(--rp-radius);
   box-shadow: 0 10px 28px var(--rp-shadow-strong);
   color: var(--rp-text);
-  overflow: hidden;
   padding: 4px;
 }
 :root.rp-theme .entry {
