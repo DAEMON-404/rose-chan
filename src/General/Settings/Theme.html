@@ -1,4 +1,24 @@
 <fieldset>
+  <legend>Presets</legend>
+  <p class="rp-preview-note description">One click sets the variant, look and font together. Everything below stays adjustable afterwards.</p>
+  <div class="rp-presets">
+    <button type="button" data-preset="dossier-dark">Dossier &middot; Dark</button>
+    <button type="button" data-preset="dossier-dawn">Dossier &middot; Dawn</button>
+    <button type="button" data-preset="classic-dark">Classic &middot; Dark</button>
+    <button type="button" data-preset="classic-dawn">Classic &middot; Dawn</button>
+    <button type="button" data-preset="off">Off</button>
+  </div>
+  <div class="rp-preview">
+    <div class="replyContainer quotesYou">
+      <div class="post reply">
+        <div class="postInfo"><span class="nameBlock"><span class="name">Anonymous</span></span> <span class="dateTime">09/01/26(Tue)18:40:12</span> <span class="postNum">No.1000007</span></div>
+        <blockquote class="postMessage">This is a live preview of the current look.<br><span class="quote">&gt;greentext keeps its colour</span><br>A <span class="quotelink">&gt;&gt;1000001</span> quotelink, and a <s>redacted spoiler</s> to hover over.</blockquote>
+      </div>
+    </div>
+  </div>
+</fieldset>
+
+<fieldset>
   <legend>Theme</legend>
   <div>
     <label>
@@ -17,6 +37,27 @@
   </div>
   <div>
     <label>
+      Look:
+      <select name="Theme Style">
+        <option value="dossier">Dossier Declassified</option>
+        <option value="classic">Classic cards</option>
+      </select>
+    </label>
+    <span class="description">: Dossier turns each post into a numbered entry in a case file, with stamps, brackets and redaction bars. Classic is the plain card layout.</span>
+  </div>
+  <div>
+    <label>
+      Font:
+      <select name="Theme Font">
+        <option value="dm-mono">DM Mono (bundled)</option>
+        <option value="system">System UI font</option>
+        <option value="board">Board default</option>
+      </select>
+    </label>
+    <span class="description">: DM Mono ships inside the script, so nothing is fetched from a font service.</span>
+  </div>
+  <div>
+    <label>
       Accent:
       <select name="Theme Accent">
         <option value="iris">Iris (default)</option>
@@ -27,7 +68,7 @@
         <option value="love">Love</option>
       </select>
     </label>
-    <span class="description">: Colour used for links, focus rings and highlights.</span>
+    <span class="description">: Colour used for links, brackets, focus rings and highlights.</span>
   </div>
   <div>
     <label>
@@ -41,12 +82,20 @@
     <span class="description">: Spacing and padding around posts.</span>
   </div>
   <div>
-    <label><input type="checkbox" name="Modern Font"> Modern font stack</label>
-    <span class="description">: Use the system UI font instead of the board default.</span>
+    <label><input type="checkbox" name="Card OP"> Cards for OPs</label>
+    <span class="description">: Give opening posts the same panel treatment as replies. In the dossier look this is also where the case file tab and corner brackets go.</span>
   </div>
   <div>
-    <label><input type="checkbox" name="Card OP"> Cards for OPs</label>
-    <span class="description">: Give opening posts the same panel treatment as replies.</span>
+    <label><input type="checkbox" name="Stamps"> Rubber stamps</label>
+    <span class="description">: Stamp your own posts and replies to you, and label pinned, closed and archived threads. Dossier look only.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Paper Grain"> Paper grain</label>
+    <span class="description">: A faint film of grain over the page. Dossier look only.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Spotlight"> Spotlight on hover</label>
+    <span class="description">: Dim the rest of a thread while the cursor rests on one post.</span>
   </div>
   <div>
     <label><input type="checkbox" name="Square Corners"> Square corners</label>
@@ -62,7 +111,7 @@
   <legend>Animations</legend>
   <div>
     <label><input type="checkbox" name="Animations"> Enable animations</label>
-    <span class="description">: Fade new posts in, and ease menus, dialogs and hovers.</span>
+    <span class="description">: Stamp new posts in, ease menus and dialogs open, wipe redaction bars away on hover, and sweep a scanline down the page when the variant flips.</span>
   </div>
   <div>
     <label>
@@ -79,6 +128,10 @@
     <span class="description">: Lift posts, thumbnails and catalog cards slightly under the cursor.</span>
   </div>
   <div>
+    <label><input type="checkbox" name="Reveal on Load"> Reveal on load</label>
+    <span class="description">: The first screen of posts or catalog cards slides in one after another when a page opens.</span>
+  </div>
+  <div>
     <label><input type="checkbox" name="Smooth Scrolling"> Smooth scrolling</label>
   </div>
   <div>
@@ -88,7 +141,11 @@
 </fieldset>
 
 <fieldset>
-  <legend>Navigation</legend>
+  <legend>Navigation and tools</legend>
+  <div>
+    <label><input type="checkbox" name="Dossier Header"> Case file header</label>
+    <span class="description">: A panel at the top of every thread with its number, when it was opened, entries, files, posters and status.</span>
+  </div>
   <div>
     <label><input type="checkbox" name="Scroll to Top"> Back-to-top button</label>
     <span class="description">: Show a button in the corner once you have scrolled down.</span>
@@ -96,5 +153,9 @@
   <div>
     <label><input type="checkbox" name="Reading Progress"> Reading progress bar</label>
     <span class="description">: Thin bar along the edge of the page showing how far you have scrolled.</span>
+  </div>
+  <div>
+    <label><input type="checkbox" name="Redaction Shortcut"> Redaction button in the header</label>
+    <span class="description rp-keybind-note">: One click inks over every post, name, file and thumbnail on the page until clicked again. The keybind (<code class="rp-redact-key"></code>) works either way and can be changed in the Keybinds tab.</span>
   </div>
 </fieldset>

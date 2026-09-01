@@ -831,19 +831,30 @@ Config =
     # Rosé Pine variants shipped in src/css/rose-pine.css.
     'Theme':               'none'
     'Auto Theme':          false
+    # 'dossier' is the Dossier Declassified look: file cards, stamps, redaction
+    # bars and DM Mono. 'classic' is the plain card layout from earlier builds.
+    'Theme Style':         'dossier'
+    # 'dm-mono' is bundled with the script; 'system' is the OS UI font; 'board'
+    # leaves the site's own font alone.
+    'Theme Font':          'dm-mono'
     'Theme Accent':        'iris'
     'Theme Density':       'normal'
     'Square Corners':      false
-    'Modern Font':         true
     'Card OP':             true
     'Blur Effects':        true
+    'Paper Grain':         true
+    'Stamps':              true
+    'Dossier Header':      true
+    'Spotlight':           false
     'Animations':          true
     'Animation Speed':     'normal'
     'Hover Effects':       true
+    'Reveal on Load':      true
     'Force Motion':        false
     'Smooth Scrolling':    true
     'Scroll to Top':       true
     'Reading Progress':    false
+    'Redaction Shortcut':  true
 
   archives:
     archiveLists:      'https://4chenz.github.io/archives.json/archives.json'
@@ -907,6 +918,10 @@ Config =
     'Open settings': [
       'Alt+o'
       'Open Settings.'
+    ]
+    'Toggle redaction': [
+      'Alt+d'
+      'Redact every post on the page until pressed again.'
     ]
     'Close': [
       'Esc'

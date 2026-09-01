@@ -23,6 +23,25 @@ css
 
 );
 
+// == DM Mono web font (SIL OFL 1.1, see src/css/fonts/OFL.txt) == //
+// Bundled as data URIs, like Font Awesome above, so the board's own content
+// security policy never gets a say and nothing is fetched from a font CDN.
+var dmMono = ([regular, medium, italic]) => (
+
+'/* DM Mono, Copyright 2020 The DM Mono Project Authors (https://www.github.com/googlefonts/dm-mono), SIL Open Font License 1.1 */\n' +
+[[regular, 400, 'normal'], [medium, 500, 'normal'], [italic, 400, 'italic']].map(([font, weight, style]) =>
+`@font-face {
+  font-family: "DM Mono";
+  src: url('data:font/woff2;base64,${font}') format('woff2');
+  font-weight: ${weight};
+  font-style: ${style};
+  font-display: swap;
+}
+`
+).join('')
+
+);
+
 // == Create CSS for Link Title Favicons == //
 var icons = (names, data) => (
 
@@ -38,4 +57,4 @@ names.map((file, i) =>
 
 );
 
-return {fa, icons};
+return {fa, dmMono, icons};

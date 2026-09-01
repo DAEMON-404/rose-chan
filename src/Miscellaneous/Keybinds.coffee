@@ -39,6 +39,8 @@ Keybinds =
         Keybinds.qr threadRoot
       when Conf['Open settings']
         Settings.open()
+      when Conf['Toggle redaction']
+        Theme.redact.toggle()
       when Conf['Close']
         if Settings.dialog
           Settings.close()

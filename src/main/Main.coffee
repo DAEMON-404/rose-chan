@@ -643,6 +643,8 @@ Main =
     ['Theme',                     Theme]
     ['Scroll to Top',             Theme.scrollToTop]
     ['Reading Progress',          Theme.progress]
+    ['Dossier Header',            Theme.dossier]
+    ['Redaction',                 Theme.redact]
     ['Catalog Links',             CatalogLinks]
     ['Settings',                  Settings]
     ['Index Generator',           Index]

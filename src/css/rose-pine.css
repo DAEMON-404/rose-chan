@@ -4,6 +4,10 @@
  * Both share the `rp-theme` class, which carries every structural rule;
  * the variant classes only redefine the palette below.
  * Palette values are the upstream Rosé Pine specification.
+ *
+ * Two looks sit on top of the palette: `rp-classic` (plain cards) and
+ * `rp-dossier`, the Dossier Declassified layer at the end of this file: file
+ * cards with corner brackets, rubber stamps, redaction bars and DM Mono.
  */
 
 /* ============================ Palette ============================ */
@@ -30,6 +34,11 @@
   --rp-glass:           rgba(31, 29, 46, .82);
   --rp-quote:           #a2c08a;
   --rp-heading:         #f6c177;
+  /* Redaction bars and stamps. On the dark variant a black bar would vanish
+     into the page, so the ink is the text colour instead. */
+  --rp-ink:             #e0def4;
+  --rp-stamp:           #eb6f92;
+  --rp-grain:           .055;
   color-scheme: dark;
 }
 
@@ -58,6 +67,9 @@
      headings use a deepened gold (4.32:1 — better, though still under the 4.5:1
      AA threshold) while --rp-gold keeps the spec value for borders and fills. */
   --rp-heading:         #9a6a16;
+  --rp-ink:             #2a273f;
+  --rp-stamp:           #b4637a;
+  --rp-grain:           .045;
   color-scheme: light;
 }
 
@@ -76,8 +88,15 @@
   --rp-gap:         12px;
   --rp-pad:         12px 14px;
   --rp-post-gap:    8px;
-  --rp-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-  --rp-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --rp-font-ui:   -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  /* DM Mono is bundled with the script (see src/css/fonts). */
+  --rp-mono:      "DM Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --rp-font:      var(--rp-font-ui);
+  --rp-font-size: 13.5px;
+}
+:root.rp-theme.rp-font-dm-mono {
+  --rp-font:      var(--rp-mono);
+  --rp-font-size: 13px;
 }
 :root.rp-theme.rp-square {
   --rp-radius:      0px;
@@ -104,17 +123,17 @@
 :root.rp-theme body {
   background-image: none;
 }
-:root.rp-theme.rp-modern-font body,
-:root.rp-theme.rp-modern-font .postMessage,
-:root.rp-theme.rp-modern-font .post,
-:root.rp-theme.rp-modern-font input,
-:root.rp-theme.rp-modern-font textarea,
-:root.rp-theme.rp-modern-font select,
-:root.rp-theme.rp-modern-font button {
+:root.rp-theme:not(.rp-font-board) body,
+:root.rp-theme:not(.rp-font-board) .postMessage,
+:root.rp-theme:not(.rp-font-board) .post,
+:root.rp-theme:not(.rp-font-board) input,
+:root.rp-theme:not(.rp-font-board) textarea,
+:root.rp-theme:not(.rp-font-board) select,
+:root.rp-theme:not(.rp-font-board) button {
   font-family: var(--rp-font);
 }
-:root.rp-theme.rp-modern-font body {
-  font-size: 13.5px;
+:root.rp-theme:not(.rp-font-board) body {
+  font-size: var(--rp-font-size);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -845,4 +864,728 @@
   border: none;
   box-shadow: none;
   padding: 4px 6px;
+}
+
+/* ============================ Dossier Declassified ============================ */
+/*
+ * The `rp-dossier` look: every post is an entry in a case file. File cards with
+ * hanging tabs, corner brackets on the opening post, rubber stamps, redaction
+ * bars that wipe away under the cursor, mono metadata everywhere. All of it is
+ * scoped to `rp-theme.rp-dossier`, so `rp-classic` keeps the plain cards above.
+ * Labels use DM Mono here even when the body font is the system stack.
+ */
+
+:root.rp-theme.rp-dossier {
+  --rp-radius:    4px;
+  --rp-radius-sm: 2px;
+  --rp-label:     500 10px/1 var(--rp-mono);
+}
+:root.rp-theme.rp-dossier.rp-square {
+  --rp-radius:    0px;
+  --rp-radius-sm: 0px;
+}
+:root.rp-theme.rp-dossier ::selection {
+  background: var(--rp-accent);
+  color: var(--rp-base);
+}
+
+/* Paper grain: a fixed film of noise over the page, faint enough to read through. */
+:root.rp-theme.rp-dossier.rp-grain body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--rp-grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* Board header as a letterhead. */
+:root.rp-theme.rp-dossier .boardBanner .boardTitle {
+  font-family: var(--rp-mono);
+  font-weight: 500;
+  font-size: 19px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+:root.rp-theme.rp-dossier .boardBanner .boardSubtitle {
+  font-family: var(--rp-mono);
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+:root.rp-theme.rp-dossier .boardBanner .boardSubtitle::before {
+  content: "// ";
+  color: var(--rp-accent);
+}
+:root.rp-theme.rp-dossier #globalMessage,
+:root.rp-theme.rp-dossier .globalMessage {
+  font-family: var(--rp-mono);
+  font-size: 12px;
+}
+
+/* ---- Entries ---- */
+
+:root.rp-theme.rp-dossier .post {
+  position: relative;
+  box-shadow: none;
+}
+/* Entries run the full width of the file, like pages in a folder, instead of
+   shrinking to their text the way the site's own inline-block replies do. The
+   decorative side arrows go with that; the highlight rails carry their job. */
+:root.rp-theme.rp-dossier .thread > $site$replyOriginal > .post.reply {
+  display: block;
+}
+:root.rp-theme.rp-dossier .thread > $site$replyOriginal > $site$sideArrows {
+  display: none;
+}
+:root.rp-theme.rp-dossier .post.reply {
+  border-color: var(--rp-hl-med);
+}
+:root.rp-theme.rp-dossier .thread {
+  counter-reset: rp-entry;
+}
+:root.rp-theme.rp-dossier $site$replyOriginal {
+  counter-increment: rp-entry;
+}
+/* The hanging tab in the top-right corner. Clones (quote previews, inlined
+   quotes) carry data-clone and get no tab, so the numbering stays honest. */
+:root.rp-theme.rp-dossier $site$replyOriginal > .post.reply::before {
+  content: "Entry " counter(rp-entry, decimal-leading-zero);
+  position: absolute;
+  top: -1px;
+  right: 14px;
+  font: var(--rp-label);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--rp-muted);
+  background: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-med);
+  border-top: 0;
+  border-radius: 0 0 var(--rp-radius-sm) var(--rp-radius-sm);
+  padding: 4px 7px 3px 9px;
+  pointer-events: none;
+}
+:root.rp-theme.rp-dossier $site$replyOriginal > .post.reply > .postInfo {
+  padding-right: 96px;
+}
+:root.rp-theme.rp-dossier $site$replyOriginal > .post.reply:target::before,
+:root.rp-theme.rp-dossier $site$replyOriginal > .post.reply.highlight::before {
+  color: var(--rp-base);
+  background: var(--rp-accent);
+  border-color: var(--rp-accent);
+}
+
+/* The opening post is the case file itself: a labelled tab and corner brackets. */
+:root.rp-theme.rp-dossier.rp-card-op .thread > .opContainer > .post.op {
+  border-color: var(--rp-hl-high);
+  padding-top: 22px;
+}
+:root.rp-theme.rp-dossier.rp-card-op .thread > .opContainer > .post.op::before {
+  content: "Case file";
+  position: absolute;
+  top: -1px;
+  left: 14px;
+  font: var(--rp-label);
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rp-heading);
+  background: var(--rp-overlay);
+  border: 1px solid var(--rp-hl-high);
+  border-top: 0;
+  border-radius: 0 0 var(--rp-radius-sm) var(--rp-radius-sm);
+  padding: 4px 8px 3px 10px;
+  pointer-events: none;
+}
+:root.rp-theme.rp-dossier.rp-card-op .thread > .opContainer > .post.op:has($site$icons$isSticky)::before {
+  content: "Case file // Pinned";
+  color: var(--rp-gold);
+}
+:root.rp-theme.rp-dossier.rp-card-op .thread > .opContainer > .post.op:has($site$icons$isClosed)::before {
+  content: "Case file // Closed";
+  color: var(--rp-love);
+}
+:root.rp-theme.rp-dossier.rp-card-op .thread > .opContainer > .post.op:has($site$icons$isArchived)::before {
+  content: "Case file // Archived";
+  color: var(--rp-love);
+}
+:root.rp-theme.rp-dossier.rp-card-op.rp-stamps .thread > .yourPost.opContainer > .post.op::before {
+  content: "Case file // Opened by you";
+  color: var(--rp-gold);
+}
+:root.rp-theme.rp-dossier.rp-card-op .thread > .opContainer > .post.op::after,
+:root.rp-theme #rp-dossier::after,
+:root.rp-theme.rp-dossier #fourchanx-settings::after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  bottom: 5px;
+  left: 5px;
+  pointer-events: none;
+  --rp-b: var(--rp-accent);
+  background:
+    linear-gradient(var(--rp-b), var(--rp-b)) top left / 14px 1px,
+    linear-gradient(var(--rp-b), var(--rp-b)) top left / 1px 14px,
+    linear-gradient(var(--rp-b), var(--rp-b)) top right / 14px 1px,
+    linear-gradient(var(--rp-b), var(--rp-b)) top right / 1px 14px,
+    linear-gradient(var(--rp-b), var(--rp-b)) bottom left / 14px 1px,
+    linear-gradient(var(--rp-b), var(--rp-b)) bottom left / 1px 14px,
+    linear-gradient(var(--rp-b), var(--rp-b)) bottom right / 14px 1px,
+    linear-gradient(var(--rp-b), var(--rp-b)) bottom right / 1px 14px;
+  background-repeat: no-repeat;
+  opacity: .85;
+}
+
+/* Metadata in mono. */
+:root.rp-theme.rp-dossier .postInfo {
+  font-family: var(--rp-mono);
+  font-size: 11.5px;
+  letter-spacing: .01em;
+}
+:root.rp-theme.rp-dossier .postInfo .subject {
+  font-weight: 500;
+  font-size: 11.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+:root.rp-theme.rp-dossier .postInfo .name {
+  font-weight: 500;
+}
+:root.rp-theme.rp-dossier .postInfo .dateTime {
+  color: var(--rp-muted);
+}
+:root.rp-theme.rp-dossier .postInfo .postNum a {
+  color: var(--rp-subtle);
+}
+:root.rp-theme.rp-dossier .postInfo .postNum a:hover {
+  color: var(--rp-accent);
+}
+:root.rp-theme.rp-dossier .postMessage {
+  margin-top: 6px;
+}
+:root.rp-theme.rp-dossier .fileText,
+:root.rp-theme.rp-dossier .fileInfo {
+  font-family: var(--rp-mono);
+  font-size: 11px;
+}
+:root.rp-theme.rp-dossier .fileThumb img {
+  border: 1px solid var(--rp-hl-med);
+  background: var(--rp-overlay);
+  padding: 2px;
+}
+:root.rp-theme.rp-dossier .fileThumb img[data-expanded] {
+  padding: 0;
+}
+:root.rp-theme.rp-dossier .postMessage pre,
+:root.rp-theme.rp-dossier .postMessage code,
+:root.rp-theme.rp-dossier .prettyprint {
+  border-left: 3px solid var(--rp-accent);
+}
+
+/* Rubber stamps, inline after the post info so they never sit on the text. */
+:root.rp-theme.rp-dossier.rp-stamps .yourPost > .post.reply > .postInfo::after,
+:root.rp-theme.rp-dossier.rp-stamps .quotesYou > .post.reply > .postInfo::after,
+:root.rp-theme #rp-dossier .rp-stamp {
+  display: inline-block;
+  font: 500 9.5px/1 var(--rp-mono);
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--rp-stamp);
+  border: 3px double var(--rp-stamp);
+  border-radius: 2px;
+  padding: 3px 5px 3px 8px;
+  margin-left: 10px;
+  vertical-align: middle;
+  transform: rotate(-4deg);
+  opacity: .8;
+  pointer-events: none;
+}
+:root.rp-theme.rp-dossier.rp-stamps .yourPost > .post.reply > .postInfo::after {
+  content: "You";
+  color: var(--rp-gold);
+  border-color: var(--rp-gold);
+}
+:root.rp-theme.rp-dossier.rp-stamps .quotesYou > .post.reply > .postInfo::after {
+  content: "Re: you";
+  color: var(--rp-love);
+  border-color: var(--rp-love);
+}
+:root.rp-theme.rp-dossier.rp-stamps .yourPost.quotesYou > .post.reply > .postInfo::after {
+  content: "You // Re: you";
+}
+
+/* Redaction bars. Spoilers are inked over and wipe open under the cursor. */
+:root.rp-theme.rp-dossier s,
+:root.rp-theme.rp-dossier .spoiler {
+  color: transparent;
+  background-color: transparent;
+  background-image: linear-gradient(var(--rp-ink), var(--rp-ink));
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: right center;
+  border-radius: 1px;
+  padding: 0 .2em;
+  text-decoration: none;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+:root.rp-theme.rp-dossier s:hover,
+:root.rp-theme.rp-dossier .spoiler:hover {
+  color: var(--rp-text);
+  background-size: 0% 100%;
+}
+
+/* ---- Chrome ---- */
+
+:root.rp-theme.rp-dossier #header-bar {
+  font-family: var(--rp-mono);
+  font-size: 12px;
+  letter-spacing: .02em;
+}
+:root.rp-theme.rp-dossier.top-header #header-bar.dialog {
+  border-top: 2px solid var(--rp-accent);
+}
+:root.rp-theme.rp-dossier.bottom-header #header-bar.dialog {
+  border-bottom: 2px solid var(--rp-accent);
+}
+:root.rp-theme.rp-dossier #board-list .current {
+  color: var(--rp-heading);
+}
+:root.rp-theme.rp-dossier #shortcuts .shortcut > a {
+  position: relative;
+}
+:root.rp-theme.rp-dossier .pagelist,
+:root.rp-theme.rp-dossier .navLinks,
+:root.rp-theme.rp-dossier #index-options,
+:root.rp-theme.rp-dossier #index-search {
+  font-family: var(--rp-mono);
+  font-size: 12px;
+}
+:root.rp-theme.rp-dossier .dialog,
+:root.rp-theme.rp-dossier .notification,
+:root.rp-theme.rp-dossier #menu,
+:root.rp-theme.rp-dossier .submenu {
+  font-family: var(--rp-mono);
+}
+:root.rp-theme.rp-dossier #qr,
+:root.rp-theme.rp-dossier #thread-watcher,
+:root.rp-theme.rp-dossier #updater,
+:root.rp-theme.rp-dossier #thread-stats,
+:root.rp-theme.rp-dossier #menu,
+:root.rp-theme.rp-dossier .submenu,
+:root.rp-theme.rp-dossier #qp,
+:root.rp-theme.rp-dossier #ihover,
+:root.rp-theme.rp-dossier .notification,
+:root.rp-theme.rp-dossier #embedding {
+  box-shadow: 0 10px 30px var(--rp-shadow-strong), 0 0 0 1px var(--rp-base);
+}
+:root.rp-theme.rp-dossier .dialog > .move {
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--rp-subtle);
+  background: var(--rp-overlay);
+  border-bottom: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius) var(--rp-radius) 0 0;
+}
+:root.rp-theme.rp-dossier #header-bar > .move {
+  display: none;
+}
+:root.rp-theme.rp-dossier #qr {
+  border-top: 2px solid var(--rp-accent);
+}
+:root.rp-theme.rp-dossier #qr .field,
+:root.rp-theme.rp-dossier #qr textarea,
+:root.rp-theme.rp-dossier #qr select,
+:root.rp-theme.rp-dossier #fourchanx-settings input[type="text"],
+:root.rp-theme.rp-dossier #fourchanx-settings input[type="number"],
+:root.rp-theme.rp-dossier #fourchanx-settings textarea,
+:root.rp-theme.rp-dossier #fourchanx-settings select {
+  font-family: var(--rp-mono);
+  font-size: 12px;
+}
+:root.rp-theme.rp-dossier button,
+:root.rp-theme.rp-dossier .qr-link,
+:root.rp-theme.rp-dossier #fourchanx-settings button {
+  font-family: var(--rp-mono);
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+:root.rp-theme.rp-dossier .notification {
+  border-left: 4px solid var(--rp-base);
+  font-size: 12px;
+}
+:root.rp-theme.rp-dossier .watcher-item,
+:root.rp-theme.rp-dossier #watcher-link {
+  font-size: 11.5px;
+}
+:root.rp-theme.rp-dossier #thread-stats,
+:root.rp-theme.rp-dossier #updater {
+  font-size: 11.5px;
+  letter-spacing: .04em;
+}
+:root.rp-theme.rp-dossier .entry {
+  font-size: 12px;
+}
+
+/* Catalog: index cards. */
+:root.rp-theme.rp-dossier .catalog-thread {
+  font-family: var(--rp-mono);
+}
+:root.rp-theme.rp-dossier .catalog-stats {
+  font-size: 10.5px;
+  letter-spacing: .06em;
+}
+:root.rp-theme.rp-dossier .catalog-thread .catalog-thumb {
+  padding: 2px;
+  background: var(--rp-overlay);
+}
+/* Watched threads keep their foam frame from the highlighting section. */
+:root.rp-theme.rp-dossier .catalog-thread:not(.watched) .catalog-thumb {
+  border: 1px solid var(--rp-hl-med);
+}
+:root.rp-theme.rp-dossier .catalog-thread:not(.watched):hover .catalog-thumb {
+  border-color: var(--rp-accent);
+}
+
+/* Settings: a folder with tabs. */
+:root.rp-theme.rp-dossier #fourchanx-settings {
+  position: relative;
+  border-color: var(--rp-hl-high);
+}
+:root.rp-theme.rp-dossier #fourchanx-settings::after {
+  top: 4px;
+  right: 4px;
+  bottom: 4px;
+  left: 4px;
+  opacity: .6;
+}
+:root.rp-theme.rp-dossier #fourchanx-settings > nav {
+  margin: -5px -5px 8px;
+  padding: 10px 14px 0;
+  align-items: flex-end;
+  background: var(--rp-overlay);
+  border-bottom: 1px solid var(--rp-hl-med);
+  border-radius: var(--rp-radius) var(--rp-radius) 0 0;
+  font-family: var(--rp-mono);
+  font-size: 11px;
+}
+:root.rp-theme.rp-dossier .sections-list {
+  border-bottom: 0;
+}
+:root.rp-theme.rp-dossier .sections-list a {
+  display: inline-block;
+  position: relative;
+  top: 1px;
+  padding: 7px 9px 6px;
+  margin-right: 1px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: var(--rp-radius) var(--rp-radius) 0 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  color: var(--rp-subtle);
+}
+:root.rp-theme.rp-dossier .sections-list a:hover {
+  color: var(--rp-text);
+}
+:root.rp-theme.rp-dossier .sections-list a.tab-selected {
+  background: var(--rp-surface);
+  border-color: var(--rp-hl-med);
+  color: var(--rp-heading) !important;
+}
+:root.rp-theme.rp-dossier #fourchanx-settings > nav .credits {
+  padding-bottom: 8px;
+  color: var(--rp-muted);
+  font-size: 10px;
+  white-space: nowrap;
+}
+:root.rp-theme.rp-dossier #fourchanx-settings fieldset {
+  border-color: var(--rp-hl-med);
+  margin: 6px 2px;
+  padding: 8px 12px 12px;
+}
+:root.rp-theme.rp-dossier #fourchanx-settings legend {
+  font: var(--rp-label);
+  font-size: 10.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--rp-heading);
+  padding: 0 6px;
+}
+:root.rp-theme.rp-dossier #fourchanx-settings legend::before {
+  content: "// ";
+  color: var(--rp-accent);
+}
+:root.rp-theme.rp-dossier .section-keybinds .field {
+  font-family: var(--rp-mono);
+}
+
+/* Navigation extras. */
+:root.rp-theme.rp-dossier #scroll-to-top {
+  border-radius: var(--rp-radius);
+}
+:root.rp-theme.rp-dossier #reading-progress > .progress-fill {
+  box-shadow: 0 0 8px var(--rp-accent);
+}
+
+/* ============================ Case file header ============================ */
+/* Built by Theme.dossier at the top of a thread. Shown in both looks. */
+
+:root.rp-theme #rp-dossier {
+  position: relative;
+  overflow: hidden;
+  margin: var(--rp-gap) 0;
+  padding: 12px 16px 14px;
+  padding-right: 200px;
+  background: var(--rp-surface);
+  border: 1px solid var(--rp-hl-high);
+  border-radius: var(--rp-radius);
+  color: var(--rp-text);
+  font-family: var(--rp-mono);
+}
+:root.rp-theme #rp-dossier .rp-dossier-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 14px;
+  font-size: 11px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--rp-subtle);
+}
+:root.rp-theme #rp-dossier .rp-tag {
+  color: var(--rp-heading);
+  font-weight: 500;
+}
+:root.rp-theme #rp-dossier .rp-tag::before {
+  content: "// ";
+  color: var(--rp-accent);
+}
+:root.rp-theme #rp-dossier .rp-tag::after {
+  content: "_";
+  color: var(--rp-accent);
+}
+:root.rp-theme #rp-dossier .rp-dossier-no {
+  color: var(--rp-text);
+}
+:root.rp-theme #rp-dossier .rp-status {
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-size: 10px;
+  color: var(--rp-foam);
+}
+:root.rp-theme #rp-dossier .rp-status[data-status="pinned"]   { color: var(--rp-gold); }
+:root.rp-theme #rp-dossier .rp-status[data-status="closed"],
+:root.rp-theme #rp-dossier .rp-status[data-status="archived"] { color: var(--rp-love); }
+:root.rp-theme #rp-dossier .rp-status[data-status="expired"]  { color: var(--rp-muted); }
+:root.rp-theme #rp-dossier dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 10px 18px;
+  margin: 12px 0 0;
+}
+:root.rp-theme #rp-dossier dl > div {
+  border-left: 1px solid var(--rp-hl-med);
+  padding-left: 10px;
+}
+:root.rp-theme #rp-dossier dt {
+  margin: 0 0 3px;
+  font-size: 9.5px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--rp-muted);
+}
+:root.rp-theme #rp-dossier dd {
+  margin: 0;
+  font-size: 13px;
+}
+:root.rp-theme #rp-dossier .rp-stamp {
+  position: absolute;
+  top: 14px;
+  right: 22px;
+  margin: 0;
+  font-size: 12px;
+  letter-spacing: .32em;
+  padding: 6px 8px 6px 14px;
+  border-width: 3px;
+  transform: rotate(-8deg);
+  opacity: .7;
+}
+@media (max-width: 720px) {
+  :root.rp-theme #rp-dossier {
+    padding-right: 16px;
+  }
+  :root.rp-theme #rp-dossier .rp-stamp {
+    display: none;
+  }
+}
+
+/* ============================ Redaction ============================ */
+/*
+ * `rp-redacted` inks over every post, name, file and thumbnail on the page.
+ * It is a privacy screen, so it works with or without a theme; the bar colour
+ * falls back to plain ink when no palette is loaded.
+ */
+
+:root.rp-redacted {
+  --rp-bar: var(--rp-ink, #1a1826);
+}
+:root.rp-redacted .postMessage,
+:root.rp-redacted .postMessage *,
+:root.rp-redacted .postInfo .subject,
+:root.rp-redacted .postInfo .name,
+:root.rp-redacted .postInfo .postertrip,
+:root.rp-redacted .postInfo .posteruid,
+:root.rp-redacted .fileText,
+:root.rp-redacted .fileText *,
+:root.rp-redacted .catalog-post .subject,
+:root.rp-redacted .catalog-post .comment,
+:root.rp-redacted .catalog-post .teaser,
+:root.rp-redacted .watcher-item > a,
+:root.rp-redacted #rp-dossier dd,
+:root.rp-redacted .boardTitle,
+:root.rp-redacted .boardSubtitle,
+:root.rp-redacted #globalMessage,
+:root.rp-redacted .globalMessage,
+:root.rp-redacted .qr-preview,
+:root.rp-redacted #qr textarea {
+  color: transparent !important;
+  text-shadow: none !important;
+}
+:root.rp-redacted .postInfo .subject,
+:root.rp-redacted .postInfo .name,
+:root.rp-redacted .postInfo .postertrip,
+:root.rp-redacted .postInfo .posteruid,
+:root.rp-redacted .fileText,
+:root.rp-redacted .catalog-post .subject,
+:root.rp-redacted .catalog-post .comment,
+:root.rp-redacted .catalog-post .teaser,
+:root.rp-redacted .watcher-item > a,
+:root.rp-redacted #rp-dossier dd,
+:root.rp-redacted .boardTitle,
+:root.rp-redacted .boardSubtitle {
+  background: var(--rp-bar) !important;
+  border-radius: 1px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+/* Comment bodies keep their line rhythm: one bar per line, a gap between. */
+:root.rp-redacted .postMessage,
+:root.rp-redacted #globalMessage,
+:root.rp-redacted .globalMessage,
+:root.rp-redacted .qr-preview,
+:root.rp-redacted #qr textarea {
+  background-image: repeating-linear-gradient(var(--rp-bar) 0 1.1em, transparent 1.1em 1.5em) !important;
+  background-attachment: local !important;
+}
+:root.rp-redacted .postMessage * {
+  background: transparent !important;
+}
+/* Bar the title's text, not the whole banner width. */
+:root.rp-redacted .boardTitle,
+:root.rp-redacted .boardSubtitle {
+  display: inline-block;
+}
+:root.rp-redacted .fileThumb img,
+:root.rp-redacted .fileThumb video,
+:root.rp-redacted .catalog-thumb,
+:root.rp-redacted #ihover img,
+:root.rp-redacted #ihover video,
+:root.rp-redacted .gal-image img,
+:root.rp-redacted .gal-image video,
+:root.rp-redacted .inline img,
+:root.rp-redacted #qp img,
+:root.rp-redacted .boardBanner img,
+:root.rp-redacted #qr .qr-preview,
+:root.rp-redacted #embedding .media {
+  filter: contrast(0) brightness(.25) !important;
+}
+:root.rp-redacted .redact-link {
+  color: var(--rp-love, #d33) !important;
+}
+
+/* ============================ Spotlight ============================ */
+/* Dim the rest of a thread while the cursor rests on one entry. */
+
+:root.rp-theme.rp-spotlight .thread:has(> $site$postContainer:hover) > $site$postContainer:not(:hover) {
+  opacity: .5;
+}
+
+/* ============================ Theme tab extras ============================ */
+
+.rp-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 10px;
+}
+.rp-presets button {
+  cursor: pointer;
+}
+:root.rp-theme .rp-presets button.rp-preset-on {
+  border-color: var(--rp-accent);
+  color: var(--rp-accent);
+}
+.rp-preview {
+  margin: 6px 0 10px;
+  padding: 10px;
+  border: 1px dashed;
+  border-radius: 6px;
+  counter-reset: rp-entry 6;
+}
+:root.rp-theme .rp-preview {
+  border-color: var(--rp-hl-med);
+  border-radius: var(--rp-radius);
+  background: var(--rp-base);
+}
+.rp-preview .replyContainer {
+  margin-top: 6px;
+}
+.rp-preview .post.reply {
+  display: block;
+}
+.rp-preview .quotelink {
+  text-decoration: underline;
+}
+.rp-preview-note {
+  font-size: 11px;
+  margin: 0 0 8px;
+}
+.rp-keybind-note code {
+  font-family: var(--rp-mono, monospace);
+}
+
+/* Scanline that sweeps the page when the variant flips. Created by Theme.sweep
+   only while animations are on, and removed when the animation ends. */
+#rp-scan {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 200;
+  pointer-events: none;
+  background: var(--rp-accent, #c4a7e7);
+  box-shadow: 0 0 18px 3px color-mix(in srgb, var(--rp-accent, #c4a7e7) 55%, transparent);
+}
+#rp-scan::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: 90px;
+  background: linear-gradient(to top, color-mix(in srgb, var(--rp-accent, #c4a7e7) 22%, transparent), transparent);
 }
