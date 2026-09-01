@@ -614,12 +614,27 @@ Settings =
     for input in $$ '[name]', section
       inputs[input.name] = input
 
-    # "Auto Theme" overrides the variant picker, and the motion options are
-    # meaningless with animations off; grey them out rather than lie about them.
+    presets = $$ '[data-preset]', section
+
+    # "Auto Theme" overrides the variant picker, the motion options are
+    # meaningless with animations off, and a couple of options only exist in
+    # the dossier look; grey them out rather than lie about them.
     updateDisabled = ->
       inputs['Theme'].disabled = !!Conf['Auto Theme']
-      for name in ['Animation Speed', 'Hover Effects', 'Force Motion']
+      for name in ['Animation Speed', 'Hover Effects', 'Reveal on Load', 'Force Motion']
         inputs[name].disabled = !Conf['Animations']
+      for name in Theme.dossierOnly
+        inputs[name].disabled = Theme.style() isnt 'dossier'
+      active = Theme.activePreset()
+      for button in presets
+        $[if button.dataset.preset is active then 'addClass' else 'rmClass'] button, 'rp-preset-on'
+      $('.rp-redact-key', section).textContent = Conf['Toggle redaction'] or 'unbound'
+      return
+
+    fill = ->
+      for name, input of inputs
+        input[if input.type is 'checkbox' then 'checked' else 'value'] = Conf[name]
+      updateDisabled()
       return
 
     items = $.dict()
@@ -630,11 +645,15 @@ Settings =
         updateDisabled()
         Theme.apply()
 
+    for button in presets
+      $.on button, 'click', ->
+        Theme.applyPreset @dataset.preset
+        fill()
+
     $.get items, (items) ->
       for key, val of items
-        input = inputs[key]
-        input[if input.type is 'checkbox' then 'checked' else 'value'] = val
-      updateDisabled()
+        Conf[key] = val
+      fill()
       return
 
   advanced: (section) ->

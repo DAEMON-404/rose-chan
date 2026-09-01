@@ -52,7 +52,8 @@ uses_tests_enabled := \
 imports_src/globals/globals.js := \
  version.json
 imports_src/css/CSS.js := \
- node_modules/font-awesome/fonts/fontawesome-webfont.woff
+ node_modules/font-awesome/fonts/fontawesome-webfont.woff \
+ $(wildcard src/css/fonts/*.woff2)
 imports_src/Monitoring/Favicon.coffee := \
  src/meta/icon128.png
 

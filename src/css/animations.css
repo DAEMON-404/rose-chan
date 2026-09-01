@@ -188,3 +188,123 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================ Dossier motion ============================ */
+/*
+ * Extra keyframes for the Dossier Declassified look and the navigation extras.
+ * Same gate as everything above: nothing here runs without
+ * `fourchanx-animations`, and the reduced-motion block at the end still wins.
+ */
+
+@keyframes fx-stamp-in {
+  0%   { opacity: 0; transform: scale(1.16) rotate(-1.5deg); }
+  55%  { opacity: 1; transform: scale(.985) rotate(.25deg); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes fx-stamp-thud {
+  0%   { opacity: 0;  transform: rotate(-8deg) scale(1.7); }
+  65%  { opacity: .8; transform: rotate(-8deg) scale(.94); }
+  100% { opacity: .7; transform: rotate(-8deg) scale(1); }
+}
+@keyframes fx-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fx-scan {
+  from { transform: translateY(-6px); opacity: 1; }
+  85%  { opacity: 1; }
+  to   { transform: translateY(100vh); opacity: 0; }
+}
+@keyframes fx-blink {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+@keyframes fx-pulse {
+  0%, 100% { transform: scale(1);    opacity: 1; }
+  50%      { transform: scale(1.45); opacity: .45; }
+}
+
+/* New entries are stamped in rather than faded in. */
+:root.fourchanx-animations.rp-dossier .fx-new-post {
+  animation: fx-stamp-in var(--fx-slow) var(--fx-lift) both;
+}
+
+/* Staggered reveal of the first screen of posts or catalog cards on load.
+   Theme.reveal sets --fx-i per node and removes the class once it has played. */
+:root.fourchanx-animations .fx-reveal {
+  animation: fx-reveal var(--fx-slow) var(--fx-ease) both;
+  animation-delay: calc(var(--fx-i, 0) * 45ms);
+}
+
+/* Variant flip: a scanline runs down the page. */
+:root.fourchanx-animations #rp-scan {
+  animation: fx-scan 720ms cubic-bezier(.4, 0, .2, 1) both;
+}
+
+/* Case file header: the panel slides in and the stamp lands on it. */
+:root.fourchanx-animations #rp-dossier {
+  animation: fx-reveal var(--fx-slow) var(--fx-ease) both;
+}
+:root.fourchanx-animations #rp-dossier .rp-stamp {
+  animation: fx-stamp-thud 560ms var(--fx-lift) both;
+  animation-delay: 220ms;
+}
+:root.fourchanx-animations #rp-dossier .rp-tag::after {
+  animation: fx-blink 1.1s steps(1) infinite;
+}
+
+/* Redaction bars wipe open under the cursor. */
+:root.fourchanx-animations.rp-dossier s,
+:root.fourchanx-animations.rp-dossier .spoiler {
+  transition:
+    background-size var(--fx-slow) var(--fx-ease),
+    color var(--fx-dur) var(--fx-ease);
+}
+
+/* Spotlight: neighbours dim smoothly. */
+:root.fourchanx-animations.rp-spotlight $site$postContainer {
+  transition: opacity var(--fx-dur) var(--fx-ease);
+}
+
+/* Header shortcuts get a sliding underline in the dossier look. */
+:root.fourchanx-animations.rp-dossier #shortcuts .shortcut > a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: var(--rp-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--fx-dur) var(--fx-ease);
+}
+:root.fourchanx-animations.rp-dossier #shortcuts .shortcut > a:hover::after {
+  transform: scaleX(1);
+}
+
+/* Live dot beside the updater countdown while it is ticking. */
+:root.fourchanx-animations.rp-theme #update-timer:not(.empty):not(.loading)::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-right: 6px;
+  border-radius: 50%;
+  vertical-align: middle;
+  background: var(--rp-foam);
+  animation: fx-pulse 2.2s ease-in-out infinite;
+}
+
+/* Redaction toggles fade rather than snap. */
+:root.fourchanx-animations .postMessage,
+:root.fourchanx-animations .postInfo .name,
+:root.fourchanx-animations .postInfo .subject,
+:root.fourchanx-animations .fileText,
+:root.fourchanx-animations .fileThumb img,
+:root.fourchanx-animations .catalog-thumb {
+  transition:
+    color var(--fx-dur) var(--fx-ease),
+    background-color var(--fx-dur) var(--fx-ease),
+    filter var(--fx-dur) var(--fx-ease);
+}
