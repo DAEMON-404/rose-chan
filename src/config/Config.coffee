@@ -839,6 +839,9 @@ Config =
     'Theme Font':          'dm-mono'
     'Theme Accent':        'iris'
     'Theme Density':       'normal'
+    # 'full' runs edge to edge like the site does; 'wide' and 'narrow' centre
+    # the page in a column with margins either side.
+    'Theme Width':         'wide'
     'Square Corners':      false
     'Card OP':             true
     'Blur Effects':        true
