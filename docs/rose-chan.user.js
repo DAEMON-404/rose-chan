@@ -491,6 +491,7 @@ Config = (function() {
       'Theme Font': 'dm-mono',
       'Theme Accent': 'iris',
       'Theme Density': 'normal',
+      'Theme Width': 'wide',
       'Square Corners': false,
       'Card OP': true,
       'Blur Effects': true,
@@ -4833,6 +4834,23 @@ a:only-of-type > .remove {\n\
   --rp-pad:         16px 20px;\n\
   --rp-post-gap:    14px;\n\
 }\n\
+/* Page width. The site runs posts edge to edge; the column options centre the\n\
+   page and leave margins either side. Only the horizontal box changes, so the\n\
+   fixed header's body offset (padding-top from 4chan X) is untouched. */\n\
+:root.rp-theme.rp-width-wide body,\n\
+:root.rp-theme.rp-width-narrow body {\n\
+  box-sizing: border-box;\n\
+  margin-left: auto;\n\
+  margin-right: auto;\n\
+  padding-left: clamp(12px, 3vw, 48px);\n\
+  padding-right: clamp(12px, 3vw, 48px);\n\
+}\n\
+:root.rp-theme.rp-width-wide body {\n\
+  max-width: 1440px;\n\
+}\n\
+:root.rp-theme.rp-width-narrow body {\n\
+  max-width: 1080px;\n\
+}\n\
 /* ============================ Page ============================ */\n\
 :root.rp-theme,\n\
 :root.rp-theme body {\n\
@@ -4960,6 +4978,16 @@ a:only-of-type > .remove {\n\
 :root.rp-theme .postContainer {\n\
   margin-bottom: var(--rp-post-gap);\n\
 }\n\
+/* The site draws the opening post as an inline box (div.op and div.opContainer\n\
+   are display: inline), which cannot hold a floated thumbnail: the card would\n\
+   wrap only the text and the image would hang out below it, pushing the first\n\
+   reply sideways. A flow-root box contains the float without clipping. */\n\
+:root.rp-theme .thread > .opContainer {\n\
+  display: block;\n\
+}\n\
+:root.rp-theme .thread > .opContainer > .post.op {\n\
+  display: flow-root;\n\
+}\n\
 :root.rp-theme .post {\n\
   background: var(--rp-surface);\n\
   border: 1px solid var(--rp-hl-med);\n\
@@ -4981,17 +5009,20 @@ a:only-of-type > .remove {\n\
   box-shadow: 0 1px 2px var(--rp-shadow);\n\
   padding: var(--rp-pad);\n\
 }\n\
+/* The site marks these with !important, so this has to as well. */\n\
 :root.rp-theme .post.reply:target,\n\
 :root.rp-theme .post.reply.highlight {\n\
-  background: var(--rp-overlay);\n\
-  border-color: var(--rp-accent);\n\
+  background: var(--rp-overlay) !important;\n\
+  border: 1px solid var(--rp-accent) !important;\n\
   box-shadow: 0 0 0 1px var(--rp-accent);\n\
 }\n\
 /* Post metadata */\n\
 :root.rp-theme .postInfo {\n\
   color: var(--rp-muted);\n\
 }\n\
-:root.rp-theme .postInfo .name {\n\
+/* The site styles names as div.post div.postInfo span.nameBlock span.name;\n\
+   these selectors carry one more class so they win without !important. */\n\
+:root.rp-theme .post .postInfo .nameBlock .name {\n\
   color: var(--rp-foam);\n\
   font-weight: 600;\n\
 }\n\
@@ -4999,7 +5030,7 @@ a:only-of-type > .remove {\n\
   color: var(--rp-heading);\n\
   font-weight: 700;\n\
 }\n\
-:root.rp-theme .postInfo .postertrip {\n\
+:root.rp-theme .post .postInfo .nameBlock .postertrip {\n\
   color: var(--rp-iris);\n\
 }\n\
 :root.rp-theme .postInfo .posteruid,\n\
@@ -5008,7 +5039,7 @@ a:only-of-type > .remove {\n\
   color: var(--rp-muted);\n\
 }\n\
 :root.rp-theme .postInfo .postNum a:hover {\n\
-  color: var(--rp-accent);\n\
+  color: var(--rp-accent) !important;\n\
 }\n\
 :root.rp-theme .postInfo .capcode,\n\
 :root.rp-theme .capcodeAdmin .name,\n\
@@ -5030,14 +5061,16 @@ a:only-of-type > .remove {\n\
 :root.rp-theme blockquote .quote {\n\
   color: var(--rp-quote);\n\
 }\n\
+/* The site colours quotelinks with !important, hence the same here. */\n\
 :root.rp-theme .quotelink,\n\
 :root.rp-theme .backlink {\n\
-  color: var(--rp-accent);\n\
+  color: var(--rp-accent) !important;\n\
+  text-decoration: none;\n\
   border-bottom: 1px solid transparent;\n\
 }\n\
 :root.rp-theme .quotelink:hover,\n\
 :root.rp-theme .backlink:hover {\n\
-  color: var(--rp-love);\n\
+  color: var(--rp-love) !important;\n\
   border-bottom-color: currentColor;\n\
 }\n\
 :root.rp-theme .deadlink,\n\
@@ -5730,7 +5763,7 @@ a:only-of-type > .remove {\n\
   letter-spacing: .08em;\n\
   text-transform: uppercase;\n\
 }\n\
-:root.rp-theme.rp-dossier .postInfo .name {\n\
+:root.rp-theme.rp-dossier .post .postInfo .nameBlock .name {\n\
   font-weight: 500;\n\
 }\n\
 :root.rp-theme.rp-dossier .postInfo .dateTime {\n\
@@ -15545,7 +15578,7 @@ Settings = (function() {
     },
     theme: function(section) {
       var button, fill, input, inputs, items, j, k, len, len1, name, presets, ref, updateDisabled;
-      $.extend(section, {innerHTML: "<fieldset><legend>Presets</legend><p class=\"rp-preview-note description\">One click sets the variant, look and font together. Everything below stays adjustable afterwards.</p><div class=\"rp-presets\"><button type=\"button\" data-preset=\"dossier-dark\">Dossier &middot; Dark</button><button type=\"button\" data-preset=\"dossier-dawn\">Dossier &middot; Dawn</button><button type=\"button\" data-preset=\"classic-dark\">Classic &middot; Dark</button><button type=\"button\" data-preset=\"classic-dawn\">Classic &middot; Dawn</button><button type=\"button\" data-preset=\"off\">Off</button></div><div class=\"rp-preview\"><div class=\"replyContainer quotesYou\"><div class=\"post reply\"><div class=\"postInfo\"><span class=\"nameBlock\"><span class=\"name\">Anonymous</span></span> <span class=\"dateTime\">09/01/26(Tue)18:40:12</span> <span class=\"postNum\">No.1000007</span></div><blockquote class=\"postMessage\">This is a live preview of the current look.<br><span class=\"quote\">&gt;greentext keeps its colour</span><br>A <span class=\"quotelink\">&gt;&gt;1000001</span> quotelink, and a <s>redacted spoiler</s> to hover over.</blockquote></div></div></div></fieldset><fieldset><legend>Theme</legend><div><label>Theme:<select name=\"Theme\"><option value=\"none\">None (use the site&#039;s own theme)</option><option value=\"rose-pine-dawn\">Ros&eacute; Pine Dawn (light)</option><option value=\"rose-pine\">Ros&eacute; Pine (dark)</option></select></label><span class=\"description\">: Replaces the board&#039;s styling as well as 4chan X&#039;s own interface.</span></div><div><label><input type=\"checkbox\" name=\"Auto Theme\"> Follow system light/dark setting</label><span class=\"description\">: Picks Dawn or Dark automatically from your OS preference, overriding the choice above.</span></div><div><label>Look:<select name=\"Theme Style\"><option value=\"dossier\">Dossier Declassified</option><option value=\"classic\">Classic cards</option></select></label><span class=\"description\">: Dossier turns each post into a numbered entry in a case file, with stamps, brackets and redaction bars. Classic is the plain card layout.</span></div><div><label>Font:<select name=\"Theme Font\"><option value=\"dm-mono\">DM Mono (bundled)</option><option value=\"system\">System UI font</option><option value=\"board\">Board default</option></select></label><span class=\"description\">: DM Mono ships inside the script, so nothing is fetched from a font service.</span></div><div><label>Accent:<select name=\"Theme Accent\"><option value=\"iris\">Iris (default)</option><option value=\"foam\">Foam</option><option value=\"rose\">Rose</option><option value=\"pine\">Pine</option><option value=\"gold\">Gold</option><option value=\"love\">Love</option></select></label><span class=\"description\">: Colour used for links, brackets, focus rings and highlights.</span></div><div><label>Density:<select name=\"Theme Density\"><option value=\"compact\">Compact</option><option value=\"normal\">Normal</option><option value=\"roomy\">Roomy</option></select></label><span class=\"description\">: Spacing and padding around posts.</span></div><div><label><input type=\"checkbox\" name=\"Card OP\"> Cards for OPs</label><span class=\"description\">: Give opening posts the same panel treatment as replies. In the dossier look this is also where the case file tab and corner brackets go.</span></div><div><label><input type=\"checkbox\" name=\"Stamps\"> Rubber stamps</label><span class=\"description\">: Stamp your own posts and replies to you, and label pinned, closed and archived threads. Dossier look only.</span></div><div><label><input type=\"checkbox\" name=\"Paper Grain\"> Paper grain</label><span class=\"description\">: A faint film of grain over the page. Dossier look only.</span></div><div><label><input type=\"checkbox\" name=\"Spotlight\"> Spotlight on hover</label><span class=\"description\">: Dim the rest of a thread while the cursor rests on one post.</span></div><div><label><input type=\"checkbox\" name=\"Square Corners\"> Square corners</label><span class=\"description\">: Turn off rounded corners.</span></div><div><label><input type=\"checkbox\" name=\"Blur Effects\"> Background blur</label><span class=\"description\">: Frost the header bar and the settings backdrop. Costs a little performance.</span></div></fieldset><fieldset><legend>Animations</legend><div><label><input type=\"checkbox\" name=\"Animations\"> Enable animations</label><span class=\"description\">: Stamp new posts in, ease menus and dialogs open, wipe redaction bars away on hover, and sweep a scanline down the page when the variant flips.</span></div><div><label>Speed:<select name=\"Animation Speed\"><option value=\"fast\">Fast</option><option value=\"normal\">Normal</option><option value=\"slow\">Slow</option></select></label></div><div><label><input type=\"checkbox\" name=\"Hover Effects\"> Hover effects</label><span class=\"description\">: Lift posts, thumbnails and catalog cards slightly under the cursor.</span></div><div><label><input type=\"checkbox\" name=\"Reveal on Load\"> Reveal on load</label><span class=\"description\">: The first screen of posts or catalog cards slides in one after another when a page opens.</span></div><div><label><input type=\"checkbox\" name=\"Smooth Scrolling\"> Smooth scrolling</label></div><div><label><input type=\"checkbox\" name=\"Force Motion\"> Animate even with &quot;reduce motion&quot; set</label><span class=\"description\">: By default animations are shortened when your system asks for reduced motion.</span></div></fieldset><fieldset><legend>Navigation and tools</legend><div><label><input type=\"checkbox\" name=\"Dossier Header\"> Case file header</label><span class=\"description\">: A panel at the top of every thread with its number, when it was opened, entries, files, posters and status.</span></div><div><label><input type=\"checkbox\" name=\"Scroll to Top\"> Back-to-top button</label><span class=\"description\">: Show a button in the corner once you have scrolled down.</span></div><div><label><input type=\"checkbox\" name=\"Reading Progress\"> Reading progress bar</label><span class=\"description\">: Thin bar along the edge of the page showing how far you have scrolled.</span></div><div><label><input type=\"checkbox\" name=\"Redaction Shortcut\"> Redaction button in the header</label><span class=\"description rp-keybind-note\">: One click inks over every post, name, file and thumbnail on the page until clicked again. The keybind (<code class=\"rp-redact-key\"></code>) works either way and can be changed in the Keybinds tab.</span></div></fieldset>"});
+      $.extend(section, {innerHTML: "<fieldset><legend>Presets</legend><p class=\"rp-preview-note description\">One click sets the variant, look and font together. Everything below stays adjustable afterwards.</p><div class=\"rp-presets\"><button type=\"button\" data-preset=\"dossier-dark\">Dossier &middot; Dark</button><button type=\"button\" data-preset=\"dossier-dawn\">Dossier &middot; Dawn</button><button type=\"button\" data-preset=\"classic-dark\">Classic &middot; Dark</button><button type=\"button\" data-preset=\"classic-dawn\">Classic &middot; Dawn</button><button type=\"button\" data-preset=\"off\">Off</button></div><div class=\"rp-preview\"><div class=\"replyContainer quotesYou\"><div class=\"post reply\"><div class=\"postInfo\"><span class=\"nameBlock\"><span class=\"name\">Anonymous</span></span> <span class=\"dateTime\">09/01/26(Tue)18:40:12</span> <span class=\"postNum\">No.1000007</span></div><blockquote class=\"postMessage\">This is a live preview of the current look.<br><span class=\"quote\">&gt;greentext keeps its colour</span><br>A <span class=\"quotelink\">&gt;&gt;1000001</span> quotelink, and a <s>redacted spoiler</s> to hover over.</blockquote></div></div></div></fieldset><fieldset><legend>Theme</legend><div><label>Theme:<select name=\"Theme\"><option value=\"none\">None (use the site&#039;s own theme)</option><option value=\"rose-pine-dawn\">Ros&eacute; Pine Dawn (light)</option><option value=\"rose-pine\">Ros&eacute; Pine (dark)</option></select></label><span class=\"description\">: Replaces the board&#039;s styling as well as 4chan X&#039;s own interface.</span></div><div><label><input type=\"checkbox\" name=\"Auto Theme\"> Follow system light/dark setting</label><span class=\"description\">: Picks Dawn or Dark automatically from your OS preference, overriding the choice above.</span></div><div><label>Look:<select name=\"Theme Style\"><option value=\"dossier\">Dossier Declassified</option><option value=\"classic\">Classic cards</option></select></label><span class=\"description\">: Dossier turns each post into a numbered entry in a case file, with stamps, brackets and redaction bars. Classic is the plain card layout.</span></div><div><label>Font:<select name=\"Theme Font\"><option value=\"dm-mono\">DM Mono (bundled)</option><option value=\"system\">System UI font</option><option value=\"board\">Board default</option></select></label><span class=\"description\">: DM Mono ships inside the script, so nothing is fetched from a font service.</span></div><div><label>Accent:<select name=\"Theme Accent\"><option value=\"iris\">Iris (default)</option><option value=\"foam\">Foam</option><option value=\"rose\">Rose</option><option value=\"pine\">Pine</option><option value=\"gold\">Gold</option><option value=\"love\">Love</option></select></label><span class=\"description\">: Colour used for links, brackets, focus rings and highlights.</span></div><div><label>Density:<select name=\"Theme Density\"><option value=\"compact\">Compact</option><option value=\"normal\">Normal</option><option value=\"roomy\">Roomy</option></select></label><span class=\"description\">: Spacing and padding around posts.</span></div><div><label>Page width:<select name=\"Theme Width\"><option value=\"full\">Full width</option><option value=\"wide\">Wide column</option><option value=\"narrow\">Narrow column</option></select></label><span class=\"description\">: Full runs edge to edge like the site does. The columns centre the page with margins either side.</span></div><div><label><input type=\"checkbox\" name=\"Card OP\"> Cards for OPs</label><span class=\"description\">: Give opening posts the same panel treatment as replies. In the dossier look this is also where the case file tab and corner brackets go.</span></div><div><label><input type=\"checkbox\" name=\"Stamps\"> Rubber stamps</label><span class=\"description\">: Stamp your own posts and replies to you, and label pinned, closed and archived threads. Dossier look only.</span></div><div><label><input type=\"checkbox\" name=\"Paper Grain\"> Paper grain</label><span class=\"description\">: A faint film of grain over the page. Dossier look only.</span></div><div><label><input type=\"checkbox\" name=\"Spotlight\"> Spotlight on hover</label><span class=\"description\">: Dim the rest of a thread while the cursor rests on one post.</span></div><div><label><input type=\"checkbox\" name=\"Square Corners\"> Square corners</label><span class=\"description\">: Turn off rounded corners.</span></div><div><label><input type=\"checkbox\" name=\"Blur Effects\"> Background blur</label><span class=\"description\">: Frost the header bar and the settings backdrop. Costs a little performance.</span></div></fieldset><fieldset><legend>Animations</legend><div><label><input type=\"checkbox\" name=\"Animations\"> Enable animations</label><span class=\"description\">: Stamp new posts in, ease menus and dialogs open, wipe redaction bars away on hover, and sweep a scanline down the page when the variant flips.</span></div><div><label>Speed:<select name=\"Animation Speed\"><option value=\"fast\">Fast</option><option value=\"normal\">Normal</option><option value=\"slow\">Slow</option></select></label></div><div><label><input type=\"checkbox\" name=\"Hover Effects\"> Hover effects</label><span class=\"description\">: Lift posts, thumbnails and catalog cards slightly under the cursor.</span></div><div><label><input type=\"checkbox\" name=\"Reveal on Load\"> Reveal on load</label><span class=\"description\">: The first screen of posts or catalog cards slides in one after another when a page opens.</span></div><div><label><input type=\"checkbox\" name=\"Smooth Scrolling\"> Smooth scrolling</label></div><div><label><input type=\"checkbox\" name=\"Force Motion\"> Animate even with &quot;reduce motion&quot; set</label><span class=\"description\">: By default animations are shortened when your system asks for reduced motion.</span></div></fieldset><fieldset><legend>Navigation and tools</legend><div><label><input type=\"checkbox\" name=\"Dossier Header\"> Case file header</label><span class=\"description\">: A panel at the top of every thread with its number, when it was opened, entries, files, posters and status.</span></div><div><label><input type=\"checkbox\" name=\"Scroll to Top\"> Back-to-top button</label><span class=\"description\">: Show a button in the corner once you have scrolled down.</span></div><div><label><input type=\"checkbox\" name=\"Reading Progress\"> Reading progress bar</label><span class=\"description\">: Thin bar along the edge of the page showing how far you have scrolled.</span></div><div><label><input type=\"checkbox\" name=\"Redaction Shortcut\"> Redaction button in the header</label><span class=\"description rp-keybind-note\">: One click inks over every post, name, file and thumbnail on the page until clicked again. The keybind (<code class=\"rp-redact-key\"></code>) works either way and can be changed in the Keybinds tab.</span></div></fieldset>"});
       inputs = $.dict();
       ref = $$('[name]', section);
       for (j = 0, len = ref.length; j < len; j++) {
@@ -15937,6 +15970,7 @@ Theme = (function() {
     accents: ['iris', 'foam', 'rose', 'pine', 'gold', 'love'],
     nativeStyles: ['yotsuba', 'yotsuba-b', 'futaba', 'burichan', 'photon', 'tomorrow', 'spooky'],
     densities: ['compact', 'normal', 'roomy'],
+    widths: ['full', 'wide', 'narrow'],
     speeds: ['fast', 'normal', 'slow'],
     dossierOnly: ['Stamps', 'Paper Grain'],
     init: function() {
@@ -16037,7 +16071,7 @@ Theme = (function() {
       return typeof Main.updateNativeStyle === "function" ? Main.updateNativeStyle() : void 0;
     },
     applyModifiers: function(enabled) {
-      var accent, density, font, style;
+      var accent, density, font, style, width;
       $.rmClass.apply($, [doc].concat(slice.call((function() {
         var j, len, ref, results;
         ref = Theme.styles;
@@ -16068,6 +16102,16 @@ Theme = (function() {
         }
         return results;
       })())));
+      $.rmClass.apply($, [doc].concat(slice.call((function() {
+        var j, len, ref, results;
+        ref = Theme.widths;
+        results = [];
+        for (j = 0, len = ref.length; j < len; j++) {
+          width = ref[j];
+          results.push("rp-width-" + width);
+        }
+        return results;
+      })())));
       $.rmClass(doc, 'rp-compact', 'rp-roomy', 'rp-square', 'rp-card-op', 'rp-blur', 'rp-grain', 'rp-stamps', 'rp-spotlight');
       if (!enabled) {
         return;
@@ -16081,6 +16125,10 @@ Theme = (function() {
       density = Conf['Theme Density'];
       if (density === 'compact' || density === 'roomy') {
         $.addClass(doc, "rp-" + density);
+      }
+      width = Conf['Theme Width'];
+      if (width === 'wide' || width === 'narrow') {
+        $.addClass(doc, "rp-width-" + width);
       }
       Theme.setClass('rp-square', Conf['Square Corners']);
       Theme.setClass('rp-card-op', Conf['Card OP']);

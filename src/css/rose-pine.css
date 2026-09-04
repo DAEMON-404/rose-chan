@@ -113,6 +113,24 @@
   --rp-post-gap:    14px;
 }
 
+/* Page width. The site runs posts edge to edge; the column options centre the
+   page and leave margins either side. Only the horizontal box changes, so the
+   fixed header's body offset (padding-top from 4chan X) is untouched. */
+:root.rp-theme.rp-width-wide body,
+:root.rp-theme.rp-width-narrow body {
+  box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(12px, 3vw, 48px);
+  padding-right: clamp(12px, 3vw, 48px);
+}
+:root.rp-theme.rp-width-wide body {
+  max-width: 1440px;
+}
+:root.rp-theme.rp-width-narrow body {
+  max-width: 1080px;
+}
+
 /* ============================ Page ============================ */
 
 :root.rp-theme,
@@ -251,6 +269,16 @@
   margin-bottom: var(--rp-post-gap);
 }
 
+/* The site draws the opening post as an inline box (div.op and div.opContainer
+   are display: inline), which cannot hold a floated thumbnail: the card would
+   wrap only the text and the image would hang out below it, pushing the first
+   reply sideways. A flow-root box contains the float without clipping. */
+:root.rp-theme .thread > .opContainer {
+  display: block;
+}
+:root.rp-theme .thread > .opContainer > .post.op {
+  display: flow-root;
+}
 :root.rp-theme .post {
   background: var(--rp-surface);
   border: 1px solid var(--rp-hl-med);
@@ -272,10 +300,11 @@
   box-shadow: 0 1px 2px var(--rp-shadow);
   padding: var(--rp-pad);
 }
+/* The site marks these with !important, so this has to as well. */
 :root.rp-theme .post.reply:target,
 :root.rp-theme .post.reply.highlight {
-  background: var(--rp-overlay);
-  border-color: var(--rp-accent);
+  background: var(--rp-overlay) !important;
+  border: 1px solid var(--rp-accent) !important;
   box-shadow: 0 0 0 1px var(--rp-accent);
 }
 
@@ -283,7 +312,9 @@
 :root.rp-theme .postInfo {
   color: var(--rp-muted);
 }
-:root.rp-theme .postInfo .name {
+/* The site styles names as div.post div.postInfo span.nameBlock span.name;
+   these selectors carry one more class so they win without !important. */
+:root.rp-theme .post .postInfo .nameBlock .name {
   color: var(--rp-foam);
   font-weight: 600;
 }
@@ -291,7 +322,7 @@
   color: var(--rp-heading);
   font-weight: 700;
 }
-:root.rp-theme .postInfo .postertrip {
+:root.rp-theme .post .postInfo .nameBlock .postertrip {
   color: var(--rp-iris);
 }
 :root.rp-theme .postInfo .posteruid,
@@ -300,7 +331,7 @@
   color: var(--rp-muted);
 }
 :root.rp-theme .postInfo .postNum a:hover {
-  color: var(--rp-accent);
+  color: var(--rp-accent) !important;
 }
 :root.rp-theme .postInfo .capcode,
 :root.rp-theme .capcodeAdmin .name,
@@ -323,14 +354,16 @@
 :root.rp-theme blockquote .quote {
   color: var(--rp-quote);
 }
+/* The site colours quotelinks with !important, hence the same here. */
 :root.rp-theme .quotelink,
 :root.rp-theme .backlink {
-  color: var(--rp-accent);
+  color: var(--rp-accent) !important;
+  text-decoration: none;
   border-bottom: 1px solid transparent;
 }
 :root.rp-theme .quotelink:hover,
 :root.rp-theme .backlink:hover {
-  color: var(--rp-love);
+  color: var(--rp-love) !important;
   border-bottom-color: currentColor;
 }
 :root.rp-theme .deadlink,
@@ -1053,7 +1086,7 @@
   letter-spacing: .08em;
   text-transform: uppercase;
 }
-:root.rp-theme.rp-dossier .postInfo .name {
+:root.rp-theme.rp-dossier .post .postInfo .nameBlock .name {
   font-weight: 500;
 }
 :root.rp-theme.rp-dossier .postInfo .dateTime {

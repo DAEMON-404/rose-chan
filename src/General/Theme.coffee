@@ -14,6 +14,7 @@ Theme =
   # of our themes is on they would fight with it, so they come off.
   nativeStyles: ['yotsuba', 'yotsuba-b', 'futaba', 'burichan', 'photon', 'tomorrow', 'spooky']
   densities: ['compact', 'normal', 'roomy']
+  widths:   ['full', 'wide', 'narrow']
   speeds:   ['fast', 'normal', 'slow']
 
   # Settings that only make sense inside one look or the other.
@@ -102,6 +103,7 @@ Theme =
     $.rmClass doc, ("rp-#{style}"  for style  in Theme.styles)...
     $.rmClass doc, ("rp-font-#{font}" for font in Theme.fonts)...
     $.rmClass doc, ("rp-accent-#{accent}" for accent in Theme.accents)...
+    $.rmClass doc, ("rp-width-#{width}" for width in Theme.widths)...
     $.rmClass doc, 'rp-compact', 'rp-roomy', 'rp-square', 'rp-card-op', 'rp-blur',
       'rp-grain', 'rp-stamps', 'rp-spotlight'
     return unless enabled
@@ -114,6 +116,9 @@ Theme =
 
     density = Conf['Theme Density']
     $.addClass doc, "rp-#{density}" if density in ['compact', 'roomy']
+
+    width = Conf['Theme Width']
+    $.addClass doc, "rp-width-#{width}" if width in ['wide', 'narrow']
 
     Theme.setClass 'rp-square',    Conf['Square Corners']
     Theme.setClass 'rp-card-op',   Conf['Card OP']
